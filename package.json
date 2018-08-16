@@ -1,0 +1,21 @@
+{
+  "name": "db_designer_pwa",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "./node_modules/http-server/bin/http-server -p 9999"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "db_designer_core": "https://github.com/ayeressian/db_designer_core.git",
+    "normalize.css": "^8.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-google": "^0.9.1",
+    "http-server": "^0.11.1"
+  }
+}

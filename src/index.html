@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+  <title>DB designer</title>
+
+  <meta charset="UTF-8">
+  <meta name="web" content="yes">
+  <link rel="manifest" href="../manifest.json">
+
+  <script type="module" src="./script.js"></script>
+  <link rel="stylesheet" type="text/css" href="../node_modules/normalize.css/normalize.css">
+  <link rel="stylesheet" type="text/css" href="./style.css">
+  <script type="module" src="../node_modules/db_designer_core/src/index.js"></script>
+
+</head>
+
+<body>
+  <div class="main_container">
+    <ul class="toolbar">
+      <li class="action create_table"></li>
+      <li class="action create_relation"></li>
+    </ul>
+    <db-designer class="designer" src="../node_modules/db_designer_core/example/schema/benchmark.json"></db-designer>
+  </div>
+</body>
+
+</html>
