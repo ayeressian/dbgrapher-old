@@ -8,7 +8,7 @@
     "start": "./node_modules/http-server/bin/http-server -p 9999"
   },
   "author": "",
-  "license": "ISC",
+  "license": "GNU 3",
   "dependencies": {
     "db_designer_core": "https://github.com/ayeressian/db_designer_core.git",
     "normalize.css": "^8.0.0"
