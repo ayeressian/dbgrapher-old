@@ -6,37 +6,8 @@
   display: grid;
   grid-template-columns: 60px 1fr;
   grid-template-rows: 32px 1fr;
-}
-
-.top_toolbar {
-  grid-column: 1 / 3;
-  grid-row: 1;
-  margin: 0;
-  padding: 0;
-}
-
-.top_toolbar {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  background-color: #d9d9d9;
-}
-
-.top_toolbar li {
-  float: left;
-}
-
-.top_toolbar li a {
-  display: block;
-  color: black;
-  text-align: center;
-  padding: 7px 8px;
-  text-decoration: none;
-}
-
-.top_toolbar li a:hover:not(.active) {
-  background-color: #bfbfbf;
+  width: 100vw;
+  height: 100vh;
 }
 
 .left_toolbar {
@@ -62,4 +33,32 @@
 
 .designer {
   grid-row: 2;
+}
+
+.top_toolbar {
+  grid-column: 1 / 3;
+  grid-row: 1;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #d9d9d9;
+}
+
+.top_toolbar li {
+  float: left;
+}
+
+.top_toolbar li a {
+  display: block;
+  color: black;
+  text-align: center;
+  padding: 7px 8px;
+  text-decoration: none;
+}
+
+.top_toolbar > li a:hover:not(.active) {
+  background-color: #bfbfbf;
 }
