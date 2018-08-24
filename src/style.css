@@ -11,24 +11,29 @@
 }
 
 .left_toolbar {
-  padding-left: 5px;
+  padding: 0;
   margin: 0;
   grid-row: 2;
 }
 
 .left_toolbar .action {
-  width: 48px;
-  height: 48px;
-  margin-top: 10px;
+  width: 60px;
+  height: 60px;
   list-style-type: none;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.left_toolbar .action:hover {
+  background-color: #dddddd;
 }
 
 .left_toolbar .action.create_table {
-  background: url(../asset/image/icon_create_table_48x48.png) no-repeat;
+  background-image: url(../asset/image/icon_create_table_48x48.png);
 }
 
 .left_toolbar .action.create_relation {
-  background: url(../asset/image/icon_create_relation_48x48.png) no-repeat;
+  background-image: url(../asset/image/icon_create_relation_48x48.png);
 }
 
 db-designer {

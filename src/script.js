@@ -54,4 +54,14 @@ document.addEventListener('DOMContentLoaded', () => {
       break;
     }
   });
+
+  dbDesigner.addEventListener('click', (event) => {
+    const rect = event.target.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    console.log(x, y);
+  });
+
+  
 });
