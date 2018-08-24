@@ -10,7 +10,8 @@
   "author": "",
   "license": "GNU 3",
   "dependencies": {
-    "db_designer_core": "https://github.com/ayeressian/db_designer_core.git",
+    "db_designer_core": "git+https://github.com/ayeressian/db_designer_core.git",
+    "menu-bar-component": "git+https://github.com/ayeressian/menu_bar_component.git",
     "normalize.css": "^8.0.0"
   },
   "devDependencies": {

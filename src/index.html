@@ -12,20 +12,19 @@
   <link rel="stylesheet" type="text/css" href="../node_modules/normalize.css/normalize.css">
   <link rel="stylesheet" type="text/css" href="./style.css">
   <script type="module" src="../node_modules/db_designer_core/src/index.js"></script>
+  <script type="module" src="../node_modules/menu-bar-component/src/menu_bar.js"></script>
 
 </head>
 
 <body>
+  <input type="file" id="file_open" style="display:none" accept="application/json"/>
   <div class="main_container">
-    <ul class="top_toolbar">
-      <li><a href="#home">File</a></li>
-      <li><a href="#about">About</a></li>
-    </ul>
+    <menu-bar></menu-bar>
     <ul class="left_toolbar">
       <li class="action create_table"></li>
       <li class="action create_relation"></li>
     </ul>
-    <db-designer class="designer" src="../node_modules/db_designer_core/example/schema/benchmark.json"></db-designer>
+    <db-designer></db-designer>
   </div>
 </body>
 

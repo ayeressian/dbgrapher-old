@@ -3,3 +3,55 @@ if ('serviceWorker' in navigator) {
     .register('../service-worker.js')
     .then(() => console.log('Service Worker Registered'));
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  const menuBar = document.querySelector('menu-bar');
+  menuBar.config = {
+    items: [
+      {
+        id: 'file',
+        title: 'File',
+        items: [
+          {
+            id: 'open',
+            title: 'Open'
+          },
+          {
+            id: 'save',
+            title: 'Save'
+          }
+        ]
+      },
+      {
+        id: 'help',
+        title: 'Help',
+        items: [
+          {
+            id: 'about',
+            title: 'About'
+          }
+        ]
+      }
+    ]
+  };
+
+  const dbDesigner = document.querySelector('db-designer');
+  const fileOpenElem = document.getElementById('file_open');
+
+  fileOpenElem.addEventListener('change', (event) => {
+    const reader = new FileReader();
+    reader.readAsText(event.target.files[0]);
+    reader.onload = (event) => {
+      const schema = JSON.parse(event.target.result);
+      dbDesigner.schema = schema;
+    };
+  });
+
+  menuBar.addEventListener('select', (event) => {
+    switch (event.detail) {
+      case 'open':
+      fileOpenElem.click();
+      break;
+    }
+  });
+});
