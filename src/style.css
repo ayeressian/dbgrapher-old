@@ -44,3 +44,11 @@ menu-bar {
   grid-column: 1 / 3;
   grid-row: 1;
 }
+
+dialog div, dialog menu {
+  margin-top: 40px;
+}
+
+dialog table th {
+  text-align: left;
+}
