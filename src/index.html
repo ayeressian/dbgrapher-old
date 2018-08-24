@@ -17,7 +17,50 @@
 </head>
 
 <body>
-  <input type="file" id="file_open" style="display:none" accept="application/json"/>
+  <input type="file" id="file_open" style="display:none" accept="application/json" />
+
+  <dialog id="create_edit_dialog">
+    <h3>Create Table</h3>
+    <form method="dialog">
+      <div>
+        <label>Name:
+          <input type="text" />
+        </label>
+      </div>
+      <div>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input type="text"/></td>
+              <td>
+                <select>
+                  <option>Int</option>
+                  <option>String</option>
+                </select>
+              </td>
+              <td>
+                <button>Remove</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <button>Add column</button>
+      </div>
+      <menu>
+        <button>Cancel</button>
+        <button>Create</button>
+      </menu>
+    </form>
+  </dialog>
+
   <div class="main_container">
     <menu-bar></menu-bar>
     <ul class="left_toolbar">

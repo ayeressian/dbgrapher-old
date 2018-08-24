@@ -37,6 +37,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const dbDesigner = document.querySelector('db-designer');
   const fileOpenElem = document.getElementById('file_open');
+  const createEditDialog = document.getElementById('create_edit_dialog');
+  const createTableBtn = document.querySelector('.create_table');
+  const createRelationBtn = document.querySelector('.create_relation');
 
   fileOpenElem.addEventListener('change', (event) => {
     const reader = new FileReader();
@@ -63,5 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log(x, y);
   });
 
-  
+  createTableBtn.addEventListener('click', () => {
+    createEditDialog.showModal();
+  });
 });
