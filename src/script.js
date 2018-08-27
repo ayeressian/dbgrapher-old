@@ -93,13 +93,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  function clearCreateEditDialog() {
+    dialogColumns.innerHTML = '';
+    dialogFkColumns.innerHTML = '';
+    dialogNameInput.value = '';
+  }
+
   dbDesigner.addEventListener('tableDblClick', (event) => {
+    clearCreateEditDialog();
     dialogTitle.innerHTML = 'Edit Table';
     createEditBtn.innerHTML = 'Done';
     const table = event.detail;
     dialogNameInput.value = table.name;
-    dialogColumns.innerHTML = '';
-    dialogFkColumns.innerHTML = '';
     table.columns.forEach((column) => {
       const tr = document.createElement('tr');
       const columnNameTd = document.createElement('td');
@@ -180,6 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   createTableBtn.addEventListener('click', () => {
+    clearCreateEditDialog();
     dialogTitle.innerHTML = 'Create Table';
     createEditBtn.innerHTML = 'Create';
     createEditDialog.showModal();
