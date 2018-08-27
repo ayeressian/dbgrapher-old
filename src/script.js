@@ -4,8 +4,36 @@ if ('serviceWorker' in navigator) {
     .then(() => console.log('Service Worker Registered'));
 }
 
+const types = [
+  'int', 'string'
+];
+
 document.addEventListener('DOMContentLoaded', () => {
+  const dbDesigner = document.querySelector('db-designer');
+  const fileOpenElem = document.getElementById('file_open');
+  const createEditDialog = document.getElementById('create_edit_dialog');
+  const createTableBtn = document.querySelector('.create_table');
+  const createRelationBtn = document.querySelector('.create_relation');
   const menuBar = document.querySelector('menu-bar');
+  const dialogTitle = document.querySelector('#dialog_title');
+  const dialogNameInput = document.querySelector('#name_input');
+  const dialogColumns = document.querySelector('#columns');
+  const dialogFkColumns = document.querySelector('#fk_columns');
+  const createEditBtn = document.querySelector('#create_edit_button');
+
+  let currentSchema;
+  function setSchema(schema) {
+    currentSchema = schema;
+    dbDesigner.schema = schema;
+  }
+
+  function getDbDesignerClickCords(event) {
+    const rect = event.target.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    return { x, y };
+  }
+
   menuBar.config = {
     items: [
       {
@@ -35,38 +63,125 @@ document.addEventListener('DOMContentLoaded', () => {
     ]
   };
 
-  const dbDesigner = document.querySelector('db-designer');
-  const fileOpenElem = document.getElementById('file_open');
-  const createEditDialog = document.getElementById('create_edit_dialog');
-  const createTableBtn = document.querySelector('.create_table');
-  const createRelationBtn = document.querySelector('.create_relation');
-
   fileOpenElem.addEventListener('change', (event) => {
     const reader = new FileReader();
     reader.readAsText(event.target.files[0]);
     reader.onload = (event) => {
       const schema = JSON.parse(event.target.result);
-      dbDesigner.schema = schema;
+      setSchema(schema);
     };
   });
 
   menuBar.addEventListener('select', (event) => {
     switch (event.detail) {
       case 'open':
-      fileOpenElem.click();
-      break;
+        fileOpenElem.click();
+        break;
     }
   });
 
-  dbDesigner.addEventListener('click', (event) => {
-    const rect = event.target.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
+  function onForeignTableSelectChange(foreignTableSelect, foreignColumnSelect) {
+    const columns = currentSchema.tables.find((table) => table.name === foreignTableSelect.value).columns;
+    foreignColumnSelect.innerHTML = '';
+    columns.forEach((column) => {
+      if (!column.fk) {
+        const tableColumnNameOption = document.createElement('option');
+        tableColumnNameOption.setAttribute('value', column.name);
+        tableColumnNameOption.innerHTML = column.name;
+        foreignColumnSelect.appendChild(tableColumnNameOption);
+      }
+    });
+  }
 
-    console.log(x, y);
+  dbDesigner.addEventListener('tableDblClick', (event) => {
+    dialogTitle.innerHTML = 'Edit Table';
+    createEditBtn.innerHTML = 'Done';
+    const table = event.detail;
+    dialogNameInput.value = table.name;
+    dialogColumns.innerHTML = '';
+    dialogFkColumns.innerHTML = '';
+    table.columns.forEach((column) => {
+      const tr = document.createElement('tr');
+      const columnNameTd = document.createElement('td');
+      const columnNameInput = document.createElement('input');
+      columnNameInput.value = column.name;
+      columnNameTd.appendChild(columnNameInput);
+      tr.appendChild(columnNameTd);
+
+      const pkTd = document.createElement('td');
+      const pkCheckbox = document.createElement('input');
+      pkCheckbox.setAttribute('type', 'checkbox');
+      pkCheckbox.checked = column.pk;
+      pkTd.appendChild(pkCheckbox);
+
+      const removeTd = document.createElement('td');
+      const removeBtn = document.createElement('button');
+      removeBtn.innerHTML = 'Remove';
+      removeTd.appendChild(removeBtn);
+
+      if (column.fk) {
+        tr.appendChild(pkTd);
+
+        const foreignTableTd = document.createElement('td');
+        const foreignTableSelect = document.createElement('select');
+        currentSchema.tables.forEach((table) => {
+          const tableNameOption = document.createElement('option');
+          tableNameOption.setAttribute('value', table.name);
+          tableNameOption.innerHTML = table.name;
+          foreignTableSelect.appendChild(tableNameOption);
+        });
+        // TODO: not use private variable
+        foreignTableSelect.value = column.fk.table._name;
+        foreignTableTd.appendChild(foreignTableSelect);
+        tr.appendChild(foreignTableTd);
+
+        const foreignColumnTd = document.createElement('td');
+        const foreignColumnSelect = document.createElement('select');
+        foreignColumnTd.appendChild(foreignColumnSelect);
+        tr.appendChild(foreignColumnTd);
+
+        onForeignTableSelectChange(foreignTableSelect, foreignColumnSelect);
+        foreignTableSelect.addEventListener('change', () => {
+          onForeignTableSelectChange(foreignTableSelect, foreignColumnSelect);
+        });
+
+        tr.appendChild(removeTd);
+        dialogFkColumns.appendChild(tr);
+      } else {
+        const typeTd = document.createElement('td');
+        const typeSelect = document.createElement('select');
+
+        types.forEach((type) => {
+          const typeOption = document.createElement('option');
+          typeOption.innerHTML = type;
+          typeOption.setAttribute('value', type);
+          typeSelect.appendChild(typeOption);
+        });
+
+        if (column.type) {
+          typeSelect.value = column.type;
+        }
+
+        typeTd.appendChild(typeSelect);
+        tr.appendChild(typeTd);
+
+        tr.appendChild(pkTd);
+
+        tr.appendChild(removeTd);
+
+        dialogColumns.appendChild(tr);
+      }
+    });
+    createEditDialog.showModal();
+  });
+
+  dbDesigner.addEventListener('click', (event) => {
+    // const cord = getDbDesignerClickCords(event);
   });
 
   createTableBtn.addEventListener('click', () => {
+    dialogTitle.innerHTML = 'Create Table';
+    createEditBtn.innerHTML = 'Create';
     createEditDialog.showModal();
   });
 });
