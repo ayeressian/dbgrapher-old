@@ -8,6 +8,18 @@ const types = [
   'int', 'string'
 ];
 
+function cloneObject(obj) {
+  const clone = {};
+  for (const i in obj) {
+      if (obj[i] != null && typeof(obj[i]) == 'object') {
+          clone[i] = cloneObject(obj[i]);
+      } else {
+        clone[i] = obj[i];
+      }
+  }
+  return clone;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const dbDesigner = document.querySelector('db-designer');
   const fileOpenElem = document.getElementById('file_open');
@@ -22,16 +34,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const createEditBtn = document.querySelector('#create_edit_button');
 
   let currentSchema;
-  function setSchema(schema) {
-    currentSchema = schema;
-    dbDesigner.schema = schema;
-  }
 
   function getDbDesignerClickCords(event) {
     const rect = event.target.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
-    return { x, y };
+    return {x, y};
   }
 
   menuBar.config = {
@@ -68,7 +76,11 @@ document.addEventListener('DOMContentLoaded', () => {
     reader.readAsText(event.target.files[0]);
     reader.onload = (event) => {
       const schema = JSON.parse(event.target.result);
-      setSchema(schema);
+      // currentSchema = cloneObject(schema);
+      currentSchema = JSON.parse(JSON.stringify(schema));
+      dbDesigner.schema = schema;
+      console.log(currentSchema);
+
     };
   });
 
@@ -104,8 +116,11 @@ document.addEventListener('DOMContentLoaded', () => {
     dialogTitle.innerHTML = 'Edit Table';
     createEditBtn.innerHTML = 'Done';
     const table = event.detail;
-    dialogNameInput.value = table.name;
-    table.columns.forEach((column) => {
+    const schemaTable = currentSchema.tables.find((schemaTable) => schemaTable.name === table.name);
+    console.log(schemaTable);
+
+    dialogNameInput.value = schemaTable.name;
+    schemaTable.columns.forEach((column) => {
       const tr = document.createElement('tr');
       const columnNameTd = document.createElement('td');
       const columnNameInput = document.createElement('input');
@@ -135,8 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
           tableNameOption.innerHTML = table.name;
           foreignTableSelect.appendChild(tableNameOption);
         });
-        // TODO: not use private variable
-        foreignTableSelect.value = column.fk.table._name;
+        foreignTableSelect.value = column.fk.table;
         foreignTableTd.appendChild(foreignTableSelect);
         tr.appendChild(foreignTableTd);
 
