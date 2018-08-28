@@ -8,18 +8,6 @@ const types = [
   'int', 'string'
 ];
 
-function cloneObject(obj) {
-  const clone = {};
-  for (const i in obj) {
-      if (obj[i] != null && typeof(obj[i]) == 'object') {
-          clone[i] = cloneObject(obj[i]);
-      } else {
-        clone[i] = obj[i];
-      }
-  }
-  return clone;
-}
-
 document.addEventListener('DOMContentLoaded', () => {
   const dbDesigner = document.querySelector('db-designer');
   const fileOpenElem = document.getElementById('file_open');
@@ -76,11 +64,8 @@ document.addEventListener('DOMContentLoaded', () => {
     reader.readAsText(event.target.files[0]);
     reader.onload = (event) => {
       const schema = JSON.parse(event.target.result);
-      // currentSchema = cloneObject(schema);
       currentSchema = JSON.parse(JSON.stringify(schema));
       dbDesigner.schema = schema;
-      console.log(currentSchema);
-
     };
   });
 
@@ -117,7 +102,6 @@ document.addEventListener('DOMContentLoaded', () => {
     createEditBtn.innerHTML = 'Done';
     const table = event.detail;
     const schemaTable = currentSchema.tables.find((schemaTable) => schemaTable.name === table.name);
-    console.log(schemaTable);
 
     dialogNameInput.value = schemaTable.name;
     schemaTable.columns.forEach((column) => {
@@ -196,6 +180,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   dbDesigner.addEventListener('click', (event) => {
     // const cord = getDbDesignerClickCords(event);
+  });
+
+  dbDesigner.addEventListener('tableMove', (event) => {
+    const table = currentSchema.tables.find((table) => table.name === event.detail.table.name);
+    if (table.pos == null) {
+      table.pos = {};
+    }
+    table.pos.x = event.detail.x;
+    table.pos.y = event.detail.y;
+    console.log(event.detail.x, event.detail.y);
   });
 
   createTableBtn.addEventListener('click', () => {
