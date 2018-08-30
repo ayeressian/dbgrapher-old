@@ -15,11 +15,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const createTableBtn = document.querySelector('.create_table');
   const createRelationBtn = document.querySelector('.create_relation');
   const menuBarElem = document.querySelector('menu-bar');
-  const dialogTitleElem = document.querySelector('#dialog_title');
-  const dialogNameInput = document.querySelector('#name_input');
-  const dialogColumnsElem = document.querySelector('#columns');
-  const dialogFkColumnsElem = document.querySelector('#fk_columns');
-  const dialogCreateEditBtnElem = document.querySelector('#create_edit_button');
+  const dialogTitleElem = document.querySelector('#create_edit_dialog #dialog_title');
+  const dialogNameInput = document.querySelector('#create_edit_dialog #name_input');
+  const dialogColumnsElem = document.querySelector('#create_edit_dialog #columns');
+  const dialogFkColumnsElem = document.querySelector('#create_edit_dialog #fk_columns');
+  const dialogCreateEditBtnElem = document.querySelector('#create_edit_dialog #create_edit_button');
+  const dialogErrorElem = document.querySelector('#create_edit_dialog .errors');
+  const dialogForm = document.querySelector('dialog form');
+  const dialogCancelBtn = document.querySelector('dialog #cancel');
 
   let currentSchema;
 
@@ -113,20 +116,21 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function clearCreateEditDialog() {
+    dialogColumns = [];
+    dialogFkColumns = [];
     dialogColumnsElem.innerHTML = '';
     dialogFkColumnsElem.innerHTML = '';
     dialogNameInput.value = '';
+    dialogErrorElem.innerHTML = '';
   }
 
-  let dialogColumns;
-  let dialogFkColumns;
+  let dialogColumns = [];
+  let dialogFkColumns = [];
   let dialogSchemaTable;
 
   const dialogTableSameFkOptions = [];
 
   dbDesignerElem.addEventListener('tableDblClick', (event) => {
-    dialogColumns = [];
-    dialogFkColumns = [];
     clearCreateEditDialog();
     dialogTitleElem.innerHTML = 'Edit Table';
     dialogCreateEditBtnElem.innerHTML = 'Done';
@@ -146,6 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const columnNameInput = document.createElement('input');
       columnNameInput.value = column.name;
       columnNameTd.appendChild(columnNameInput);
+      columnNameInput.required = true;
       tr.appendChild(columnNameTd);
 
       const pkTd = document.createElement('td');
@@ -241,6 +246,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // const cord = getDbDesignerClickCords(event);
   });
 
+  dialogCancelBtn.addEventListener('click', (event) => {
+    createEditDialogElem.close();
+  });
+
   dbDesignerElem.addEventListener('tableMove', (event) => {
     const table = currentSchema.tables.find((table) => table.name === event.detail.name);
     if (table.pos == null) {
@@ -258,21 +267,16 @@ document.addEventListener('DOMContentLoaded', () => {
     createEditDialogElem.showModal();
   });
 
-  dialogCreateEditBtnElem.addEventListener('click', () => {
+  dialogCreateEditBtnElem.addEventListener('click', (event) => {
     // TODO: validation
 
-    if (dialogSchemaTable.name !== dialogNameInput.value) {
-      currentSchema.tables.forEach((table) => {
-        table.columns.forEach((column) => {
-          if (column.fk && column.fk.table === dialogSchemaTable.name) {
-            column.fk.table = dialogNameInput.value;
-          }
-        });
-      });
-      dialogSchemaTable.name = dialogNameInput.value;
+    if (!dialogForm.checkValidity()) {
+      return;
     }
 
-    dialogSchemaTable.columns = dialogColumns.map((dialogColumn) => ({
+    let errorMessages = [];
+
+    const formattedCollumns = dialogColumns.map((dialogColumn) => ({
       name: dialogColumn.columnNameInput.value,
       pk: dialogColumn.pkCheckbox.checked,
       type: dialogColumn.typeSelect.value
@@ -287,7 +291,47 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }));
 
-    dialogSchemaTable.columns = dialogSchemaTable.columns.concat(formattedFkCollumns);
+    const allColumns = formattedCollumns.concat(formattedFkCollumns);
+
+    if (allColumns.find((columnI) => allColumns.find((columnJ) => columnI !== columnJ && columnI.name === columnJ.name))) {
+      errorMessages.push(`Two or more columns with the same name.`);
+    }
+
+    currentSchema.tables.forEach((table) => {
+      for (const column of table.columns) {
+        if (column.fk && column.fk.table === dialogSchemaTable.name) {
+          if (!formattedCollumns.find((fColumn) => column.fk.column === fColumn.name)) {
+            errorMessages.push(`Table ${table.name} has FK constraint to this table on column ${column.fk.column} that no longer exists.`);
+            break;
+          }
+        }
+      }
+    });
+
+    if (errorMessages.length > 0) {
+      event.preventDefault();
+      errorMessages.forEach((errorMessage) => {
+        const errorElem = document.createElement('p');
+        errorElem.innerHTML = errorMessage;
+        dialogErrorElem.appendChild(errorElem);
+      });
+      return;
+    }
+
+    if (dialogSchemaTable.name !== dialogNameInput.value) {
+      currentSchema.tables.forEach((table) => {
+        table.columns.forEach((column) => {
+          if (column.fk && column.fk.table === dialogSchemaTable.name) {
+            column.fk.table = dialogNameInput.value;
+          }
+        });
+      });
+      dialogSchemaTable.name = dialogNameInput.value;
+    }
+
+    dialogSchemaTable.columns = formattedCollumns;
+
+    dialogSchemaTable.columns = allColumns;
     setSchema(currentSchema);
   });
 });

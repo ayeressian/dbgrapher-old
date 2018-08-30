@@ -62,3 +62,7 @@ dialog menu button:not(:first-child) {
 dialog table th {
   text-align: left;
 }
+
+dialog .errors p {
+  color: #cc0000;
+}

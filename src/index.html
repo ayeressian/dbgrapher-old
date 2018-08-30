@@ -24,7 +24,7 @@
     <form method="dialog">
       <div>
         <label>Name:
-          <input type="text" id="name_input" />
+          <input type="text" id="name_input" required/>
         </label>
       </div>
       <div>
@@ -62,8 +62,11 @@
         </table>
         <button>Add relation</button>
       </div>
+      <div class="errors">
+
+      </div>
       <menu>
-        <button>Cancel</button>
+        <button id="cancel">Cancel</button>
         <button id="create_edit_button"></button>
       </menu>
     </form>
