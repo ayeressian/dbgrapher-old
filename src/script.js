@@ -159,10 +159,6 @@ document.addEventListener('DOMContentLoaded', () => {
       removeBtn.innerHTML = 'Remove';
       removeTd.appendChild(removeBtn);
 
-      removeBtn.addEventListener('click', () => {
-        tr.remove();
-      });
-
       if (column.fk) {
         tr.appendChild(pkTd);
 
@@ -189,7 +185,12 @@ document.addEventListener('DOMContentLoaded', () => {
         tr.appendChild(removeTd);
         dialogFkColumnsElem.appendChild(tr);
 
-        dialogFkColumns.push({columnNameInput, pkCheckbox, foreignTableSelect, foreignColumnSelect});
+        const index = dialogFkColumns.push({columnNameInput, pkCheckbox, foreignTableSelect, foreignColumnSelect}) - 1;
+
+        removeBtn.addEventListener('click', () => {
+          dialogFkColumns.splice(index, 1);
+          tr.remove();
+        });
       } else {
         const typeTd = document.createElement('td');
         const typeSelect = document.createElement('select');
@@ -214,7 +215,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         dialogColumnsElem.appendChild(tr);
 
-        dialogColumns.push({columnNameInput, pkCheckbox, typeSelect});
+        const index = dialogColumns.push({columnNameInput, pkCheckbox, typeSelect}) - 1;
+        removeBtn.addEventListener('click', () => {
+          dialogColumns.splice(index, 1);
+          tr.remove();
+        });
       }
     });
     dialogFkColumns.forEach((item) => {
