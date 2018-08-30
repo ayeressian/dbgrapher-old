@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const columns = currentSchema.tables.find((table) => table.name === foreignTableSelect.value).columns;
       foreignColumnSelect.innerHTML = '';
       columns.forEach((column) => {
-        if (!column.fk) {
+        if (!column.fk && (column.uq || column.pk)) {
           const tableColumnNameOption = document.createElement('option');
           tableColumnNameOption.setAttribute('value', column.name);
           tableColumnNameOption.innerHTML = column.name;
@@ -159,6 +159,18 @@ document.addEventListener('DOMContentLoaded', () => {
       pkCheckbox.checked = column.pk;
       pkTd.appendChild(pkCheckbox);
 
+      const uqTd = document.createElement('td');
+      const uqCheckbox = document.createElement('input');
+      uqCheckbox.setAttribute('type', 'checkbox');
+      uqCheckbox.checked = column.uq;
+      uqTd.appendChild(uqCheckbox);
+
+      const nnTd = document.createElement('td');
+      const nnCheckbox = document.createElement('input');
+      nnCheckbox.setAttribute('type', 'checkbox');
+      nnCheckbox.checked = column.nn;
+      nnTd.appendChild(nnCheckbox);
+
       const removeTd = document.createElement('td');
       const removeBtn = document.createElement('button');
       removeBtn.innerHTML = 'Remove';
@@ -166,6 +178,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (column.fk) {
         tr.appendChild(pkTd);
+        tr.appendChild(uqTd);
+        tr.appendChild(nnTd);
 
         const foreignTableTd = document.createElement('td');
         const foreignTableSelect = document.createElement('select');
@@ -190,7 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
         tr.appendChild(removeTd);
         dialogFkColumnsElem.appendChild(tr);
 
-        const index = dialogFkColumns.push({columnNameInput, pkCheckbox, foreignTableSelect, foreignColumnSelect}) - 1;
+        const index = dialogFkColumns.push({columnNameInput, pkCheckbox, uqCheckbox, nnCheckbox, foreignTableSelect, foreignColumnSelect}) - 1;
 
         removeBtn.addEventListener('click', () => {
           dialogFkColumns.splice(index, 1);
@@ -215,12 +229,14 @@ document.addEventListener('DOMContentLoaded', () => {
         tr.appendChild(typeTd);
 
         tr.appendChild(pkTd);
+        tr.appendChild(uqTd);
+        tr.appendChild(nnTd);
 
         tr.appendChild(removeTd);
 
         dialogColumnsElem.appendChild(tr);
 
-        const index = dialogColumns.push({columnNameInput, pkCheckbox, typeSelect}) - 1;
+        const index = dialogColumns.push({columnNameInput, pkCheckbox, uqCheckbox, nnCheckbox, typeSelect}) - 1;
         removeBtn.addEventListener('click', () => {
           dialogColumns.splice(index, 1);
           tr.remove();
@@ -279,12 +295,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const formattedCollumns = dialogColumns.map((dialogColumn) => ({
       name: dialogColumn.columnNameInput.value,
       pk: dialogColumn.pkCheckbox.checked,
+      uq: dialogColumn.uqCheckbox.checked,
+      nn: dialogColumn.nnCheckbox.checked,
       type: dialogColumn.typeSelect.value
     }));
 
     const formattedFkCollumns = dialogFkColumns.map((dialogFkColumn) => ({
       name: dialogFkColumn.columnNameInput.value,
       pk: dialogFkColumn.pkCheckbox.checked,
+      uq: dialogFkColumn.uqCheckbox.checked,
+      nn: dialogFkColumn.nnCheckbox.checked,
       fk: {
         table: dialogFkColumn.foreignTableSelect.value,
         column: dialogFkColumn.foreignColumnSelect.value
