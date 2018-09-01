@@ -49,20 +49,3 @@ dialog div, dialog menu {
   margin-top: 40px;
 }
 
-dialog menu {
-  display: flex;
-  justify-content: center;
-  padding-left: 0;
-}
-
-dialog menu button:not(:first-child) {
-  margin-left: 10px;
-}
-
-dialog table th {
-  text-align: left;
-}
-
-dialog .errors p {
-  color: #cc0000;
-}
