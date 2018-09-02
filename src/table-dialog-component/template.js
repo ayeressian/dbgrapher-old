@@ -1,5 +1,5 @@
 export default /* html*/ `
-<dialog id="create_edit_dialog">
+<dialog>
   <style>
     dialog menu {
       display: flex;
@@ -30,7 +30,7 @@ export default /* html*/ `
       <table>
         <thead>
           <tr>
-            <th>Columns</th>
+            <th colspan="6">Columns</th>
           </tr>
           <tr>
             <th>Name</th>
@@ -43,13 +43,13 @@ export default /* html*/ `
         <tbody id="columns">
         </tbody>
       </table>
-      <button>Add column</button>
+      <button id="add_column">Add column</button>
     </div>
     <div>
       <table>
         <thead>
           <tr>
-            <th>Foreign Key Columns</th>
+            <th colspan="7">Foreign Key Columns</th>
           </tr>
           <tr>
             <th>Name</th>
@@ -63,7 +63,7 @@ export default /* html*/ `
         <tbody id="fk_columns">
         </tbody>
       </table>
-      <button>Add relation</button>
+      <button id="add_relation">Add relation</button>
     </div>
     <div class="errors">
 
