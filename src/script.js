@@ -1,3 +1,5 @@
+import {validateJson} from './validate-schema.js';
+
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker
     .register('../service-worker.js')
@@ -65,7 +67,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const reader = new FileReader();
     reader.readAsText(event.target.files[0]);
     reader.onload = (event) => {
-      const schema = JSON.parse(event.target.result);
+      let schema;
+      try {
+        schema = JSON.parse(event.target.result);
+      } catch {
+        alert('Selected file doesn\'t contain valid JSON.');
+        return;
+      }
+      const jsonValidation = validateJson(schema);
+      if (!jsonValidation) {
+        alert('Selected file doesn\'t have correct Db designer file format');
+        return;
+      }
       setSchema(schema);
     };
   });

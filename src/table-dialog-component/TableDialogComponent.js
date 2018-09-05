@@ -47,6 +47,10 @@ class TableDialogComponent extends HTMLElement {
     this._setupEvents();
   }
 
+  /**
+   * When user clicks on Done.
+   * @param {Event} event
+   */
   _dialogCreateEditBtnOnClick(event) {
     // TODO: validation
 
@@ -137,6 +141,16 @@ class TableDialogComponent extends HTMLElement {
     });
   }
 
+  /**
+   * When foreign table selected, this function polpulates
+   * foreign table columns list.
+   * List of columns gets populated from schema expect in the
+   * case of edit dialog table the same as foreign table select.
+   * @param {Element} foreignTableSelect
+   * @param {Element} foreignColumnSelect
+   * @param {Element} dialogSchemaTable
+   * @param {Array<Element>} currentEditableColumns
+   */
   _onForeignTableSelectChange(
     foreignTableSelect,
     foreignColumnSelect,
@@ -144,15 +158,19 @@ class TableDialogComponent extends HTMLElement {
     currentEditableColumns) {
     if (dialogSchemaTable.name === foreignTableSelect.value) {
       currentEditableColumns.forEach((currentEditableColumn) => {
-        currentEditableColumn.value;
-        const tableColumnNameOption = document.createElement('option');
-        tableColumnNameOption.setAttribute('value', currentEditableColumn.columnNameInput.value);
-        tableColumnNameOption.innerHTML = currentEditableColumn.columnNameInput.value;
-        foreignColumnSelect.appendChild(tableColumnNameOption);
-        currentEditableColumn.columnNameInput.addEventListener('keyup', () => {
+        if (currentEditableColumn.pkCheckbox.checked || currentEditableColumn.pkCheckbox.uqCheckbox) {
+          const tableColumnNameOption = document.createElement('option');
           tableColumnNameOption.setAttribute('value', currentEditableColumn.columnNameInput.value);
           tableColumnNameOption.innerHTML = currentEditableColumn.columnNameInput.value;
-        });
+          foreignColumnSelect.appendChild(tableColumnNameOption);
+          currentEditableColumn.columnNameInput.addEventListener('keyup', () => {
+            tableColumnNameOption.setAttribute('value', currentEditableColumn.columnNameInput.value);
+            tableColumnNameOption.innerHTML = currentEditableColumn.columnNameInput.value;
+          });
+          currentEditableColumn.removeBtn.addEventListener('click', () => {
+            tableColumnNameOption.remove();
+          });
+        }
       });
     } else {
       const columns = this._schema.tables.find((table) => table.name === foreignTableSelect.value).columns;
@@ -168,6 +186,12 @@ class TableDialogComponent extends HTMLElement {
     }
   }
 
+  /**
+   * This function creates common elements for ordinary column and
+   * foreign key column.
+   * @param   {Object} column   Schema column
+   * @return  {Object}          Object with created elements inside
+   */
   _createCommonRow(column) {
     const tr = document.createElement('tr');
 
@@ -195,6 +219,22 @@ class TableDialogComponent extends HTMLElement {
     nnTd.appendChild(nnCheckbox);
     tr.appendChild(nnTd);
 
+    function onPkCheckboxChangeListener() {
+      if (pkCheckbox.checked) {
+        uqCheckbox.checked = true;
+        nnCheckbox.checked = true;
+        uqCheckbox.disabled = true;
+        nnCheckbox.disabled = true;
+      } else {
+        uqCheckbox.checked = false;
+        nnCheckbox.checked = false;
+        uqCheckbox.disabled = false;
+        nnCheckbox.disabled = false;
+      }
+    }
+
+    pkCheckbox.addEventListener('change', onPkCheckboxChangeListener);
+
     const removeTd = document.createElement('td');
     const removeBtn = document.createElement('button');
     removeBtn.innerHTML = 'Remove';
@@ -208,9 +248,16 @@ class TableDialogComponent extends HTMLElement {
       nnCheckbox.checked = column.nn;
     }
 
+    onPkCheckboxChangeListener();
+
     return {tr, columnNameInput, pkCheckbox, uqCheckbox, nnCheckbox, removeBtn};
   }
 
+  /**
+   * Creates a relation column
+   * @param {Object} schema
+   * @param {Object} column   Schema column
+   */
   _createRelationRow(schema, column) {
     const result = this._createCommonRow(column);
     const foreignTableTd = document.createElement('td');
@@ -252,6 +299,10 @@ class TableDialogComponent extends HTMLElement {
     });
   }
 
+  /**
+   * Creates a column.
+   * @param {Object} column   Schema column
+   */
   _createColumnRow(column) {
     const result = this._createCommonRow(column);
     const typeTd = document.createElement('td');
@@ -279,7 +330,8 @@ class TableDialogComponent extends HTMLElement {
       pkCheckbox: result.pkCheckbox,
       uqCheckbox: result.uqCheckbox,
       nnCheckbox: result.nnCheckbox,
-      typeSelect
+      typeSelect,
+      removeBtn: result.removeBtn
     }) - 1;
     result.removeBtn.addEventListener('click', () => {
       this._dialogColumns.splice(index, 1);
@@ -292,6 +344,15 @@ class TableDialogComponent extends HTMLElement {
     this._dialogCreateEditBtn.innerHTML = 'Create';
     this._dialog.showModal();
     return Promise.resolve();
+  }
+
+  _createOptionAndAppend(value, select) {
+    const option = document.createElement('option');
+    option.setAttribute('value', value);
+    option.innerHTML = value;
+    select.appendChild(option);
+
+    return option;
   }
 
   _openEdit(schema, table) {
@@ -307,6 +368,8 @@ class TableDialogComponent extends HTMLElement {
         option.innerHTML = this._dialogNameInput.value;
       });
     });
+
+    // Create table columns
     this._dialogSchemaTable.columns.forEach((column) => {
       if (column.fk) {
         this._createRelationRow(schema, column);
@@ -314,6 +377,28 @@ class TableDialogComponent extends HTMLElement {
         this._createColumnRow(column);
       }
     });
+
+    // When checking and unchecking PK of columns. If in FK column section of dialog there are
+    // columns that have curent dialog table selected as foreign key table, their FK column
+    // data need to be updated to reflect the current changes.
+    this._dialogColumns.concat(this._dialogFkColumns).forEach((dialogColumn) => {
+      dialogColumn.pkCheckbox.addEventListener('change', () => {
+        const filteredDialogFkColumns = this._dialogFkColumns.filter((dialogFkColumn) =>
+            dialogFkColumn.foreignTableSelect.value === this._dialogNameInput.value);
+        if (dialogColumn.pkCheckbox.checked) {
+          filteredDialogFkColumns.forEach((filteredDialogFkColumn) => {
+            this._createOptionAndAppend(dialogColumn.columnNameInput.value, filteredDialogFkColumn.foreignColumnSelect);
+          });
+        } else {
+          filteredDialogFkColumns.forEach((filteredDialogFkColumn) => {
+            Array.from(filteredDialogFkColumn.foreignColumnSelect.children).find((option) =>
+              option.value === dialogColumn.columnNameInput.value).remove();
+          });
+        }
+      });
+    });
+
+    // FK column select boxes need to be populated based on selected FK table value.
     this._dialogFkColumns.forEach((item) => {
       this._onForeignTableSelectChange(item.foreignTableSelect,
         item.foreignColumnSelect,
@@ -334,11 +419,14 @@ class TableDialogComponent extends HTMLElement {
   }
 
   open(schema, table) {
+    this._originalSchema = schema;
+    this._schema = JSON.parse(JSON.stringify(schema));
+
     this._clear();
     if (!table) {
-      return this._openCreate();
+      return this._openCreate(this._schema);
     }
-    return this._openEdit(schema, table);
+    return this._openEdit(this._schema, table);
   }
 }
 
