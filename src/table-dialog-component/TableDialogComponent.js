@@ -378,24 +378,26 @@ class TableDialogComponent extends HTMLElement {
       }
     });
 
-    // When checking and unchecking PK of columns. If in FK column section of dialog there are
+    // When checking and unchecking PK or UQ of columns. If in FK column section of dialog there are
     // columns that have curent dialog table selected as foreign key table, their FK column
     // data need to be updated to reflect the current changes.
+    const onPkUqChange = (checkbox, columnNameInput) => {
+      const filteredDialogFkColumns = this._dialogFkColumns.filter((dialogFkColumn) =>
+        dialogFkColumn.foreignTableSelect.value === this._dialogNameInput.value);
+      if (checkbox.checked) {
+        filteredDialogFkColumns.forEach((filteredDialogFkColumn) => {
+          this._createOptionAndAppend(columnNameInput.value, filteredDialogFkColumn.foreignColumnSelect);
+        });
+      } else {
+        filteredDialogFkColumns.forEach((filteredDialogFkColumn) => {
+          Array.from(filteredDialogFkColumn.foreignColumnSelect.children).find((option) =>
+            option.value === columnNameInput.value).remove();
+        });
+      }
+    };
     this._dialogColumns.concat(this._dialogFkColumns).forEach((dialogColumn) => {
-      dialogColumn.pkCheckbox.addEventListener('change', () => {
-        const filteredDialogFkColumns = this._dialogFkColumns.filter((dialogFkColumn) =>
-            dialogFkColumn.foreignTableSelect.value === this._dialogNameInput.value);
-        if (dialogColumn.pkCheckbox.checked) {
-          filteredDialogFkColumns.forEach((filteredDialogFkColumn) => {
-            this._createOptionAndAppend(dialogColumn.columnNameInput.value, filteredDialogFkColumn.foreignColumnSelect);
-          });
-        } else {
-          filteredDialogFkColumns.forEach((filteredDialogFkColumn) => {
-            Array.from(filteredDialogFkColumn.foreignColumnSelect.children).find((option) =>
-              option.value === dialogColumn.columnNameInput.value).remove();
-          });
-        }
-      });
+      dialogColumn.pkCheckbox.addEventListener('change', onPkUqChange.bind(this, dialogColumn.pkCheckbox, dialogColumn.columnNameInput));
+      dialogColumn.uqCheckbox.addEventListener('change', onPkUqChange.bind(this, dialogColumn.uqCheckbox, dialogColumn.columnNameInput));
     });
 
     // FK column select boxes need to be populated based on selected FK table value.
