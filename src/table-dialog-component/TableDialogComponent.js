@@ -183,7 +183,7 @@ class TableDialogComponent extends HTMLElement {
     currentEditableColumns) {
     if (dialogSchemaTable.name === foreignTableSelect.value) {
       currentEditableColumns.forEach((currentEditableColumn) => {
-        if (currentEditableColumn.pkCheckbox.checked || currentEditableColumn.pkCheckbox.uqCheckbox) {
+        if (currentEditableColumn.pkCheckbox.checked || currentEditableColumn.uqCheckbox.checked) {
           this._setupFkColumnOptionElem(currentEditableColumn, foreignColumnSelect);
         }
       });
@@ -234,21 +234,7 @@ class TableDialogComponent extends HTMLElement {
     nnTd.appendChild(nnCheckbox);
     tr.appendChild(nnTd);
 
-    function onPkCheckboxChangeListener() {
-      if (pkCheckbox.checked) {
-        uqCheckbox.checked = true;
-        nnCheckbox.checked = true;
-        uqCheckbox.disabled = true;
-        nnCheckbox.disabled = true;
-      } else {
-        uqCheckbox.checked = false;
-        nnCheckbox.checked = false;
-        uqCheckbox.disabled = false;
-        nnCheckbox.disabled = false;
-      }
-    }
-
-    pkCheckbox.addEventListener('change', onPkCheckboxChangeListener);
+    // pkCheckbox.addEventListener('change', onPkCheckboxChangeListener);
 
     const removeTd = document.createElement('td');
     const removeBtn = document.createElement('button');
@@ -263,7 +249,7 @@ class TableDialogComponent extends HTMLElement {
       nnCheckbox.checked = column.nn;
     }
 
-    onPkCheckboxChangeListener();
+    // onPkCheckboxChangeListener();
 
     return {
       tr,
@@ -401,14 +387,14 @@ class TableDialogComponent extends HTMLElement {
     * @param {Element} checkbox
     * @param {Object} dialogColumn
     */
-  _onPkUqChange(checkbox, dialogColumn) {
+  _onPkUqChange(firstCheckbox, secondCheckbox, dialogColumn) {
     const filteredDialogFkColumns = this._dialogFkColumns.filter((dialogFkColumn) =>
       dialogFkColumn.foreignTableSelect.value === this._dialogNameInput.value);
-    if (checkbox.checked) {
+    if (firstCheckbox.checked && !secondCheckbox.checked) {
       filteredDialogFkColumns.forEach((filteredDialogFkColumn) => {
         this._setupFkColumnOptionElem(dialogColumn, filteredDialogFkColumn.foreignColumnSelect);
       });
-    } else {
+    } else if (!firstCheckbox.checked && !secondCheckbox.checked) {
       filteredDialogFkColumns.forEach((filteredDialogFkColumn) => {
         Array.from(filteredDialogFkColumn.foreignColumnSelect.children).find((option) =>
           option.value === dialogColumn.columnNameInput.value).remove();
@@ -417,8 +403,8 @@ class TableDialogComponent extends HTMLElement {
   }
 
   _setupPkUqCheckboxResultOnFkColumn(dialogColumn) {
-    dialogColumn.pkCheckbox.addEventListener('change', this._onPkUqChange.bind(this, dialogColumn.pkCheckbox, dialogColumn));
-    dialogColumn.uqCheckbox.addEventListener('change', this._onPkUqChange.bind(this, dialogColumn.uqCheckbox, dialogColumn));
+    dialogColumn.pkCheckbox.addEventListener('change', this._onPkUqChange.bind(this, dialogColumn.pkCheckbox, dialogColumn.uqCheckbox, dialogColumn));
+    dialogColumn.uqCheckbox.addEventListener('change', this._onPkUqChange.bind(this, dialogColumn.uqCheckbox, dialogColumn.pkCheckbox, dialogColumn));
   }
 
   _openEdit(schema, table) {
