@@ -18,59 +18,58 @@ export default /* html*/ `
     dialog .errors p {
       color: #cc0000;
     }
+
+    table {
+      margin-top: 20px;
+    }
   </style>
   <h3 id="dialog_title"></h3>
   <form method="dialog">
-    <div>
-      <label>Name:
+     <div>
+        <label>Name:
         <input type="text" id="name_input" required/>
-      </label>
-    </div>
-    <div>
-      <table>
+        </label>
+     </div>
+     <table>
         <thead>
-          <tr>
-            <th colspan="6">Columns</th>
-          </tr>
-          <tr>
-            <th>Name</th>
-            <th>Type</th>
-            <th>PK</th>
-            <th>UQ</th>
-            <th>NN</th>
-          </tr>
+           <tr>
+              <th colspan="6">Columns</th>
+           </tr>
+           <tr>
+              <th>Name</th>
+              <th>Type</th>
+              <th>PK</th>
+              <th>UQ</th>
+              <th>NN</th>
+           </tr>
         </thead>
         <tbody id="columns">
         </tbody>
-      </table>
-      <button id="add_column">Add column</button>
-    </div>
-    <div>
-      <table>
+     </table>
+     <button id="add_column">Add column</button>
+     <table>
         <thead>
-          <tr>
-            <th colspan="7">Foreign Key Columns</th>
-          </tr>
-          <tr>
-            <th>Name</th>
-            <th>PK</th>
-            <th>UQ</th>
-            <th>NN</th>
-            <th>Foreign Table</th>
-            <th>Foreign Column</th>
-          </tr>
+           <tr>
+              <th colspan="7">Foreign Key Columns</th>
+           </tr>
+           <tr>
+              <th>Name</th>
+              <th>PK</th>
+              <th>UQ</th>
+              <th>NN</th>
+              <th>Foreign Table</th>
+              <th>Foreign Column</th>
+           </tr>
         </thead>
         <tbody id="fk_columns">
         </tbody>
-      </table>
-      <button id="add_relation">Add relation</button>
-    </div>
-    <div class="errors">
-
-    </div>
-    <menu>
-      <button id="cancel">Cancel</button>
-      <button id="create_edit_button"></button>
-    </menu>
+     </table>
+     <button id="add_relation">Add relation</button>
+     <div class="errors">
+     </div>
+     <menu>
+        <button id="cancel">Cancel</button>
+        <button id="create_edit_button"></button>
+     </menu>
   </form>
 </dialog>`;
