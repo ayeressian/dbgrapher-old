@@ -150,7 +150,8 @@ class TableDialogComponent extends HTMLElement {
       dialogFkColumn.foreignColumnSelect,
       this._dialogSchemaTable,
       this._dialogColumns);
-      dialogFkColumn.foreignTableSelect.addEventListener('change', () => {
+
+    dialogFkColumn.foreignTableSelect.addEventListener('change', () => {
       this._onForeignTableSelectChange(dialogFkColumn.foreignTableSelect,
         dialogFkColumn.foreignColumnSelect,
         this._dialogSchemaTable,
@@ -182,6 +183,7 @@ class TableDialogComponent extends HTMLElement {
     dialogSchemaTable,
     currentEditableColumns) {
     if (dialogSchemaTable.name === foreignTableSelect.value) {
+      foreignColumnSelect.innerHTML = null;
       currentEditableColumns.forEach((currentEditableColumn) => {
         if (currentEditableColumn.pkCheckbox.checked || currentEditableColumn.uqCheckbox.checked) {
           this._setupFkColumnOptionElem(currentEditableColumn, foreignColumnSelect);
@@ -384,7 +386,8 @@ class TableDialogComponent extends HTMLElement {
     * When checking and unchecking PK or UQ of columns. If in FK column section of dialog there are
     * columns that have curent dialog table selected as foreign key table, their FK column
     * data need to be updated to reflect the current changes.
-    * @param {Element} checkbox
+    * @param {Element} firstCheckbox
+    * @param {Element} secondCheckbox
     * @param {Object} dialogColumn
     */
   _onPkUqChange(firstCheckbox, secondCheckbox, dialogColumn) {
