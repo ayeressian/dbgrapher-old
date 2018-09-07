@@ -114,7 +114,7 @@ class TableDialogComponent extends HTMLElement {
           }
         });
       });
-      this._schema.name = this._dialogNameInput.value;
+      this._dialogSchemaTable.name= this._dialogNameInput.value;
     }
 
     this._dialogSchemaTable.columns = formattedCollumns;
