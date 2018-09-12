@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   tableDialogElem.types = types;
 
-  let currentSchema;
+  let currentSchema = {tables: []};
 
   function getDbDesignerClickCords(event) {
     const rect = event.target.getBoundingClientRect();
