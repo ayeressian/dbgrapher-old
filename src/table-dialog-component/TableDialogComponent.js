@@ -32,7 +32,8 @@ class TableDialogComponent extends HTMLElement {
   }
 
   _ready(shadowdom) {
-    this._dialog = shadowdom.querySelector('dialog');
+    this._modal = shadowdom.getElementById('myModal');
+    // this._dialog = shadowdom.querySelector('dialog');
     this._dialogTitleElem = shadowdom.querySelector('#dialog_title');
     this._dialogNameInput = shadowdom.querySelector('#name_input');
     this._dialogColumnsElem = shadowdom.querySelector('#columns');
@@ -126,7 +127,7 @@ class TableDialogComponent extends HTMLElement {
 
   _setupEvents() {
     this._dialogCancelBtn.addEventListener('click', (event) => {
-      this._dialog.close();
+      this._closeDialog();
     });
 
     this._dialogCreateEditBtn.addEventListener('click', this._dialogCreateEditBtnOnClick.bind(this));
@@ -362,8 +363,16 @@ class TableDialogComponent extends HTMLElement {
   _openCreate() {
     this._dialogTitleElem.innerHTML = 'Create Table';
     this._dialogCreateEditBtn.innerHTML = 'Create';
-    this._dialog.showModal();
+    this._openDialog();
     return Promise.resolve();
+  }
+
+  _openDialog() {
+    this._modal.style.display = 'block';
+  }
+
+  _closeDialog() {
+    this._modal.style.display = 'none';
   }
 
   _setOnColumnNameChange(columnNameInput, tableColumnNameOption) {
@@ -441,7 +450,7 @@ class TableDialogComponent extends HTMLElement {
     this._dialogFkColumns.forEach((dialogFkColumn) => {
       this._setupOnForeignTableSelectChange(dialogFkColumn);
     });
-    this._dialog.showModal();
+    this._openDialog();
     return new Promise((resolve, reject) => {
       this._dialogResolve = resolve;
       this._dialogReject = reject;

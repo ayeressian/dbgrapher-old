@@ -1,10 +1,10 @@
 import {validateJson} from './validate-schema.js';
 
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker
-    .register('../service-worker.js')
-    .then(() => console.log('Service Worker Registered'));
-}
+// if ('serviceWorker' in navigator) {
+//   navigator.serviceWorker
+//     .register('../service-worker.js')
+//     .then(() => console.log('Service Worker Registered'));
+// }
 
 const types = [
   'int', 'string'
