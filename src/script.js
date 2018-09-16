@@ -1,4 +1,5 @@
 import {validateJson} from './validate-schema.js';
+import { download } from './download.js';
 
 // if ('serviceWorker' in navigator) {
 //   navigator.serviceWorker
@@ -40,8 +41,8 @@ document.addEventListener('DOMContentLoaded', () => {
             title: 'Open'
           },
           {
-            id: 'save',
-            title: 'Save'
+            id: 'download',
+            title: 'Download'
           }
         ]
       },
@@ -87,6 +88,9 @@ document.addEventListener('DOMContentLoaded', () => {
     switch (event.detail) {
       case 'open':
         fileOpenElem.click();
+        break;
+      case 'download':
+        download(JSON.stringify(currentSchema), 'schema.json', 'application/json');
         break;
     }
   });
