@@ -4,7 +4,7 @@ import {validateJson} from './validate-schema.js';
 const menuBarElem = document.querySelector('menu-bar');
 const fileOpenElem = document.getElementById('file_open');
 
-menuBarElem.config = {
+const config = {
   items: [
     {
       id: 'file',
@@ -15,7 +15,7 @@ menuBarElem.config = {
           title: 'Open'
         },
         {
-          id: 'download',
+          id: 'downloadSchema',
           title: 'Download'
         }
       ]
@@ -29,6 +29,16 @@ menuBarElem.config = {
           title: 'About'
         }
       ]
+    }
+  ],
+  rightItems: [
+    {
+      id: 'gitHub',
+      title: 'GitHub'
+    },
+    {
+      id: 'downloadApp',
+      title: 'Download'
     }
   ]
 };
@@ -59,9 +69,18 @@ export default function setup(currentSchema, setSchema) {
       case 'open':
         fileOpenElem.click();
         break;
-      case 'download':
+      case 'downloadSchema':
         download(JSON.stringify(currentSchema), 'schema.json', 'application/json');
+        break;
+      case 'gitHub': {
+        const win = window.open('https://github.com/ayeressian/db_designer_pwa', '_blank');
+        win.focus();
+        break;
+      }
+      case 'downloadApp':
         break;
     }
   });
+
+  menuBarElem.config = config;
 }

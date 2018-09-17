@@ -9,8 +9,3 @@ export function validateJson(dbSchema) {
   const validJson = ajvCompiled(dbSchema);
   return validJson;
 }
-
-export function validateRelations(dbSchema) {
-  
-}
-
