@@ -86,18 +86,16 @@ class TableDialogComponent extends HTMLElement {
       errorMessages.push(`Two or more columns with the same name.`);
     }
 
-    if (this._dialogSchemaTable) {
-      this._schema.tables.forEach((table) => {
-        for (const column of table.columns) {
-          if (column.fk && column.fk.table === this._dialogSchemaTable.name) {
-            if (!formattedCollumns.find((fColumn) => column.fk.column === fColumn.name)) {
-              errorMessages.push(`Table ${table.name} has FK constraint to this table on column ${column.fk.column} that no longer exists.`);
-              break;
-            }
+    this._schema.tables.forEach((table) => {
+      for (const column of table.columns) {
+        if (column.fk && column.fk.table === this._dialogSchemaTable.name) {
+          if (!formattedCollumns.find((fColumn) => column.fk.column === fColumn.name)) {
+            errorMessages.push(`Table ${table.name} has FK constraint to this table on column ${column.fk.column} that no longer exists.`);
+            break;
           }
         }
-      });
-    }
+      }
+    });
 
     if (errorMessages.length > 0) {
       event.preventDefault();
@@ -109,25 +107,17 @@ class TableDialogComponent extends HTMLElement {
       return;
     }
 
-    if (this._dialogSchemaTable) {
-      if (this._dialogSchemaTable.name !== this._dialogNameInput.value) {
-        this._schema.tables.forEach((table) => {
-          table.columns.forEach((column) => {
-            if (column.fk && column.fk.table === this._dialogSchemaTable.name) {
-              column.fk.table = this._dialogNameInput.value;
-            }
-          });
+    if (this._dialogSchemaTable.name !== this._dialogNameInput.value) {
+      this._schema.tables.forEach((table) => {
+        table.columns.forEach((column) => {
+          if (column.fk && column.fk.table === this._dialogSchemaTable.name) {
+            column.fk.table = this._dialogNameInput.value;
+          }
         });
-        this._dialogSchemaTable.name= this._dialogNameInput.value;
-      }
-      this._dialogSchemaTable.columns = allColumns;
-    } else {
-      const newTable = {
-        columns: allColumns,
-        name: this._dialogNameInput.value
-      };
-      this._schema.tables.push(newTable);
+      });
+      this._dialogSchemaTable.name= this._dialogNameInput.value;
     }
+    this._dialogSchemaTable.columns = allColumns;
 
     this._dialogResolve(this._schema);
     this._closeDialog();
@@ -176,8 +166,13 @@ class TableDialogComponent extends HTMLElement {
     });
   }
 
+  _checkSelectedTableIsCurrent(foreignTableSelect) {
+    return this._dialogTableSameFkOptions.find((option) =>
+      option === foreignTableSelect.querySelector('option:checked'));
+  }
+
   /**
-   * When foreign table selected, this function polpulates
+   * When foreign table selected, this function populates
    * foreign table columns list.
    * List of columns gets populated from schema expect in the
    * case of edit dialog table the same as foreign table select.
@@ -191,7 +186,7 @@ class TableDialogComponent extends HTMLElement {
     foreignColumnSelect,
     dialogSchemaTable,
     currentEditableColumns) {
-    if (dialogSchemaTable.name === foreignTableSelect.value) {
+    if (this._checkSelectedTableIsCurrent(foreignTableSelect)) {
       foreignColumnSelect.innerHTML = null;
       currentEditableColumns.forEach((currentEditableColumn) => {
         if (currentEditableColumn.pkCheckbox.checked || currentEditableColumn.uqCheckbox.checked) {
@@ -245,8 +240,6 @@ class TableDialogComponent extends HTMLElement {
     nnTd.appendChild(nnCheckbox);
     tr.appendChild(nnTd);
 
-    // pkCheckbox.addEventListener('change', onPkCheckboxChangeListener);
-
     const removeTd = document.createElement('td');
     const removeBtn = document.createElement('button');
     removeBtn.innerHTML = 'Remove';
@@ -259,8 +252,6 @@ class TableDialogComponent extends HTMLElement {
       uqCheckbox.checked = column.uq;
       nnCheckbox.checked = column.nn;
     }
-
-    // onPkCheckboxChangeListener();
 
     return {
       tr,
@@ -284,11 +275,14 @@ class TableDialogComponent extends HTMLElement {
     const foreignTableSelect = document.createElement('select');
     schema.tables.forEach((table) => {
       const tableNameOption = document.createElement('option');
-      tableNameOption.setAttribute('value', table.name);
-      tableNameOption.innerHTML = table.name;
       foreignTableSelect.appendChild(tableNameOption);
-      if (table.name === this._dialogSchemaTable.name) {
+      if (table === this._dialogSchemaTable) {
+        tableNameOption.setAttribute('value', this._dialogNameInput.value);
+        tableNameOption.innerHTML = this._dialogNameInput.value;
         this._dialogTableSameFkOptions.push(tableNameOption);
+      } else {
+        tableNameOption.setAttribute('value', table.name);
+        tableNameOption.innerHTML = table.name;
       }
     });
     if (column) {
@@ -368,9 +362,11 @@ class TableDialogComponent extends HTMLElement {
     return dialogColumn;
   }
 
-  _openCreate() {
+  _openCreate(schema) {
     this._dialogTitleElem.innerHTML = 'Create Table';
     this._dialogCreateEditBtn.innerHTML = 'Create';
+    this._dialogSchemaTable = {name: '', columns: []};
+    schema.tables.push(this._dialogSchemaTable);
     this._openDialog();
     return Promise.resolve();
   }
@@ -434,12 +430,6 @@ class TableDialogComponent extends HTMLElement {
     this._dialogSchemaTable = schema.tables.find((schemaTable) => schemaTable.name === table.name);
 
     this._dialogNameInput.value = this._dialogSchemaTable.name;
-    this._dialogNameInput.addEventListener('keyup', () => {
-      this._dialogTableSameFkOptions.forEach((option) => {
-        option.setAttribute('value', this._dialogNameInput.value);
-        option.innerHTML = this._dialogNameInput.value;
-      });
-    });
 
     // Create table columns
     this._dialogSchemaTable.columns.forEach((column) => {
@@ -471,6 +461,13 @@ class TableDialogComponent extends HTMLElement {
     } else {
       this._openEdit(this._schema, table);
     }
+
+    this._dialogNameInput.addEventListener('keyup', () => {
+      this._dialogTableSameFkOptions.forEach((option) => {
+        option.setAttribute('value', this._dialogNameInput.value);
+        option.innerHTML = this._dialogNameInput.value;
+      });
+    });
 
     return new Promise((resolve, reject) => {
       this._dialogResolve = resolve;
