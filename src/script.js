@@ -53,5 +53,5 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  menu(currentSchema, setSchema);
+  menu(() => currentSchema, setSchema);
 });

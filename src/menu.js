@@ -1,18 +1,24 @@
-import {download} from './download.js';
-import {validateJson} from './validate-schema.js';
+import {
+  download
+} from './download.js';
+import {
+  validateJson
+} from './validate-schema.js';
 
 const menuBarElem = document.querySelector('menu-bar');
 const fileOpenElem = document.getElementById('file_open');
 
 const config = {
-  items: [
-    {
+  items: [{
       id: 'file',
       title: 'File',
-      items: [
+      items: [{
+          id: 'new',
+          title: 'New Schema'
+        },
         {
           id: 'open',
-          title: 'Open'
+          title: 'Open Schema'
         },
         {
           id: 'downloadSchema',
@@ -23,16 +29,13 @@ const config = {
     {
       id: 'help',
       title: 'Help',
-      items: [
-        {
-          id: 'about',
-          title: 'About'
-        }
-      ]
+      items: [{
+        id: 'about',
+        title: 'About'
+      }]
     }
   ],
-  rightItems: [
-    {
+  rightItems: [{
       id: 'gitHub',
       title: 'GitHub'
     },
@@ -43,7 +46,7 @@ const config = {
   ]
 };
 
-export default function setup(currentSchema, setSchema) {
+export default function setup(getCurrentSchema, setSchema) {
   fileOpenElem.addEventListener('change', (event) => {
     const reader = new FileReader();
     reader.readAsText(event.target.files[0]);
@@ -66,17 +69,25 @@ export default function setup(currentSchema, setSchema) {
 
   menuBarElem.addEventListener('select', (event) => {
     switch (event.detail) {
+      case 'new':
+        if (getCurrentSchema().tables.length > 0) {
+          if (window.confirm('Do you want to create a new schema? All the unsaved progress will be lost.')) {
+            setSchema({tables: []});
+          }
+        }
+        break;
       case 'open':
         fileOpenElem.click();
         break;
       case 'downloadSchema':
-        download(JSON.stringify(currentSchema), 'schema.json', 'application/json');
+        download(JSON.stringify(getCurrentSchema()), 'schema.json', 'application/json');
         break;
-      case 'gitHub': {
-        const win = window.open('https://github.com/ayeressian/db_designer_pwa', '_blank');
-        win.focus();
-        break;
-      }
+      case 'gitHub':
+        {
+          const win = window.open('https://github.com/ayeressian/db_designer_pwa', '_blank');
+          win.focus();
+          break;
+        }
       case 'downloadApp':
         break;
     }
