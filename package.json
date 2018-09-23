@@ -12,11 +12,9 @@
   "license": "GNU 3",
   "dependencies": {
     "ajv": "^6.5.3",
-    "css-loader": "^1.0.0",
     "db-viewer-component": "^1.0.4",
     "menu-bar-component": "^1.0.10",
-    "normalize.css": "^8.0.0",
-    "style-loader": "^0.23.0"
+    "normalize.css": "^8.0.0"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.6",
@@ -25,6 +23,8 @@
     "http-server": "^0.11.1",
     "webpack": "^4.19.1",
     "webpack-cli": "^3.1.0",
-    "webpack-dev-server": "^3.1.8"
+    "webpack-dev-server": "^3.1.8",
+    "css-loader": "^1.0.0",
+    "style-loader": "^0.23.0"
   }
 }
