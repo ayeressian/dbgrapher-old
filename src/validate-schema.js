@@ -1,5 +1,4 @@
-/* global Ajv */
-
+import Ajv from 'ajv';
 import validationSchema from './validation-schema.js';
 
 const ajv = new Ajv();

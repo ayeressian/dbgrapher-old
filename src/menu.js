@@ -5,9 +5,6 @@ import {
   validateJson
 } from './validate-schema.js';
 
-const menuBarElem = document.querySelector('menu-bar');
-const fileOpenElem = document.getElementById('file_open');
-
 const config = {
   items: [{
       id: 'file',
@@ -47,6 +44,9 @@ const config = {
 };
 
 export default function setup(getCurrentSchema, setSchema) {
+  const menuBarElem = document.querySelector('menu-bar');
+  const fileOpenElem = document.getElementById('file_open');
+
   fileOpenElem.addEventListener('change', (event) => {
     const reader = new FileReader();
     reader.readAsText(event.target.files[0]);
