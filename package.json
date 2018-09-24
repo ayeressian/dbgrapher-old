@@ -1,5 +1,5 @@
 {
-  "name": "db_designer_pwa",
+  "name": "db-designer",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -12,8 +12,8 @@
   "license": "GNU 3",
   "dependencies": {
     "ajv": "^6.5.3",
-    "db-viewer-component": "^1.0.4",
-    "menu-bar-component": "^1.0.10",
+    "db-viewer-component": "^1.0.5",
+    "menu-bar-component": "^1.0.12",
     "normalize.css": "^8.0.0"
   },
   "devDependencies": {
