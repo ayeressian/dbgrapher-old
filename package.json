@@ -7,7 +7,7 @@
     "start": "webpack-dev-server --mode development --open",
     "build-prod": "webpack --mode=production",
     "build-dev": "webpack --mode=development",
-    "deploy": "npm run build-prod && git subtree push --prefix dist origin gh-pages"
+    "deploy": "npm run build-prod && git push origin `git subtree split --prefix dist master`:gh-pages --force"
   },
   "author": "",
   "license": "GNU 3",
