@@ -6,7 +6,8 @@
   "scripts": {
     "start": "webpack-dev-server --mode development --open",
     "build-prod": "webpack --mode=production",
-    "build-dev": "webpack --mode=development"
+    "build-dev": "webpack --mode=development",
+    "deploy": "npm run build-prod && git subtree push --prefix dist origin gh-pages"
   },
   "author": "",
   "license": "GNU 3",
