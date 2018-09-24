@@ -54,7 +54,7 @@ export default function setup(getCurrentSchema, setSchema) {
       let schema;
       try {
         schema = JSON.parse(event.target.result);
-      } catch {
+      } catch (e) {
         alert('Selected file doesn\'t contain valid JSON.');
         return;
       }
