@@ -2,6 +2,10 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
+body {
+  margin: 0;
+}
+
 .main_container {
   display: grid;
   grid-template-columns: 60px 1fr;

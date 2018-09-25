@@ -32,7 +32,7 @@ class TableDialogComponent extends HTMLElement {
   }
 
   _ready(shadowdom) {
-    this._modal = shadowdom.getElementById('myModal');
+    this._modal = shadowdom.getElementById('modal');
     // this._dialog = shadowdom.querySelector('dialog');
     this._dialogTitleElem = shadowdom.querySelector('#dialog_title');
     this._dialogNameInput = shadowdom.querySelector('#name_input');

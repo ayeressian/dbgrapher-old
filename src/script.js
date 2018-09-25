@@ -1,7 +1,8 @@
 import 'menu-bar-component';
 import 'db-viewer-component';
-import './table-dialog-component/TableDialogComponent.js';
+import './component/table-dialog-component/TableDialogComponent.js';
 import 'normalize.css';
+import './style.css';
 
 import menu from './menu.js';
 

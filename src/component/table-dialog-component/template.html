@@ -1,0 +1,54 @@
+<div id="modal" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <h3 id="dialog_title"></h3>
+    <form onSubmit="return false">
+      <div>
+        <label>Name:
+        <input type="text" id="name_input" required/>
+        </label>
+      </div>
+      <table>
+        <thead>
+            <tr>
+              <th colspan="6">Columns</th>
+            </tr>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+              <th>PK</th>
+              <th>UQ</th>
+              <th>NN</th>
+            </tr>
+        </thead>
+        <tbody id="columns">
+        </tbody>
+      </table>
+      <button id="add_column">Add column</button>
+      <table>
+        <thead>
+            <tr>
+              <th colspan="7">Foreign Key Columns</th>
+            </tr>
+            <tr>
+              <th>Name</th>
+              <th>PK</th>
+              <th>UQ</th>
+              <th>NN</th>
+              <th>Foreign Table</th>
+              <th>Foreign Column</th>
+            </tr>
+        </thead>
+        <tbody id="fk_columns">
+        </tbody>
+      </table>
+      <button id="add_relation">Add relation</button>
+      <div class="errors">
+      </div>
+      <menu>
+        <button id="cancel" type="button">Cancel</button>
+        <button id="create_edit_button"></button>
+      </menu>
+    </form>
+  </div>
+</div>
