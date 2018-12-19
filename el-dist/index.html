@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+  <title>DB designer</title>
+
+  <meta charset="UTF-8">
+  <meta name="web" content="yes">
+
+  <script src="main.js"></script>
+
+</head>
+
+<body>
+  <input type="file" id="file_open" style="display:none" accept="application/json" />
+  <table-dialog></table-dialog>
+  <div class="main_container">
+    <menu-bar></menu-bar>
+    <ul class="left_toolbar">
+      <li class="action create_table" title="Create Table"></li>
+      <!-- <li class="action create_relation" title="Create Relation"></li> -->
+    </ul>
+    <db-designer></db-designer>
+  </div>
+</body>
+
+</html>

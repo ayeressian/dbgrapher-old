@@ -1,5 +1,5 @@
 /* global require, module, __dirname */
-
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
 module.exports = {
@@ -13,6 +13,12 @@ module.exports = {
     filename: 'main.js',
     path: path.resolve(__dirname, 'dist')
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: 'src/index.html',
+      inject: false
+    })
+  ],
   module: {
     rules: [
       {
