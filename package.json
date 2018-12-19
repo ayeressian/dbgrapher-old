@@ -17,7 +17,7 @@
   "license": "GNU 3",
   "dependencies": {
     "ajv": "^6.5.3",
-    "db-viewer-component": "^1.0.11",
+    "db-viewer-component": "^1.0.12",
     "menu-bar-component": "^1.0.13",
     "normalize.css": "^8.0.0"
   },
