@@ -3,8 +3,9 @@ import 'db-viewer-component';
 import './component/table-dialog-component/TableDialogComponent.js';
 import 'normalize.css';
 import './style.css';
-
-import menu from './menu.js';
+import {
+  isElectron
+} from './util';
 
 // if ('serviceWorker' in navigator) {
 //   navigator.serviceWorker
@@ -59,5 +60,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  menu(() => currentSchema, setSchema);
+  if (isElectron) {
+    import('./el-menu').then((module) => {
+      module.default(() => currentSchema, setSchema);
+    });
+  } else {
+    import('./menu').then((module) => {
+      module.default(() => currentSchema, setSchema);
+    });
+  }
 });
