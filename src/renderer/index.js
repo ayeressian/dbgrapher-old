@@ -1,7 +1,7 @@
 import 'menu-bar-component';
 import 'db-viewer-component';
 import './component/table-dialog-component/TableDialogComponent.js';
-import 'normalize.css';
+// import 'normalize.css';
 import './style.css';
 import {
   isElectron

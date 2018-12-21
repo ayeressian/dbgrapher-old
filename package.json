@@ -10,7 +10,7 @@
     "build-electron-dev": "webpack --config ./electron-webpack.config.js --mode=development --watch",
     "build-electron-prod": "webpack --config ./electron-webpack.config.js --mode=production",
     "start-electron": "electron el-dist/electron.js",
-    "estart": "concurrently \"npm:build-electron-dev\" \"npm:start-electron\"",
+    "estart": "electron-webpack dev",
     "deploy": "npm run build-prod && git push origin `git subtree split --prefix dist master`:gh-pages --force"
   },
   "author": "",
@@ -27,8 +27,11 @@
     "copy-webpack-plugin": "^4.6.0",
     "css-loader": "^1.0.0",
     "electron": "^4.0.0-beta.11",
+    "electron-webpack": "^2.6.1",
     "eslint": "^4.19.1",
     "eslint-config-google": "^0.9.1",
+    "handlebars": "^4.0.12",
+    "handlebars-loader": "^1.7.1",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
     "http-server": "^0.11.1",
@@ -39,5 +42,10 @@
     "webpack": "^4.19.1",
     "webpack-cli": "^3.1.0",
     "webpack-dev-server": "^3.1.8"
+  },
+  "electronWebpack": {
+    "renderer": {
+      "webpackConfig": "webpack.renderer.additions.js"
+    }
   }
 }

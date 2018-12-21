@@ -8,14 +8,14 @@ module.exports = {
     contentBase: './dist',
     port: 9999
   },
-  entry: './src/script.js',
+  entry: './src/renderer/index.js',
   output: {
     filename: 'main.js',
     path: path.resolve(__dirname, 'dist')
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: 'src/index.html',
+      template: 'src/renderer/index.html',
       inject: false
     })
   ],
@@ -28,7 +28,7 @@ module.exports = {
           'css-loader'
         ],
         exclude: [
-          path.resolve(__dirname, './src/component')
+          path.resolve(__dirname, './src/renderer/component')
         ]
       },
       {
@@ -38,7 +38,7 @@ module.exports = {
           'css-loader'
         ],
         include: [
-          path.resolve(__dirname, './src/component')
+          path.resolve(__dirname, './src/renderer/component')
         ]
       },
       {
