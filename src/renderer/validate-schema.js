@@ -6,6 +6,5 @@ const ajvCompiled = ajv.compile(validationSchema);
 
 export function validateJson(dbSchema) {
   const validJson = ajvCompiled(dbSchema);
-  console.log(ajvCompiled.errors);
   return validJson;
 }
