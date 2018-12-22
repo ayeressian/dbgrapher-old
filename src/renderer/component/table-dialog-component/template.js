@@ -1,5 +1,6 @@
 import template from './template.html';
-import style from './style.css';
+// TODO: find a better way to load css files
+import style from '!!css-loader!./style.css';
 
 export default `
 <style>

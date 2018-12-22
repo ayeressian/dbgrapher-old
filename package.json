@@ -9,7 +9,6 @@
     "build-dev": "webpack --mode=development",
     "build-electron-dev": "webpack --config ./electron-webpack.config.js --mode=development --watch",
     "build-electron-prod": "webpack --config ./electron-webpack.config.js --mode=production",
-    "start-electron": "electron el-dist/electron.js",
     "estart": "electron-webpack dev",
     "deploy": "npm run build-prod && git push origin `git subtree split --prefix dist master`:gh-pages --force"
   },
