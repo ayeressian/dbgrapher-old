@@ -14,7 +14,9 @@
     "build-electron-renderer-dev": "webpack --watch --mode=development --config ./renderer.webpack.config.js",
     "build-electron-dev": "concurrently \"npm:build-electron-main-dev\" \"npm:build-electron-renderer-dev\"",
     "build-electron-prod": "concurrently \"npm:build-electron-main-prod\" \"npm:build-electron-renderer-prod\"",
-    "run-electron": "electron ./electron-dist/"
+    "start-electron": "electron ./electron-dist/",
+    "package-darwin": "electron-packager ./electron-dist --platform=darwin --arch=x64 --out=./package",
+    "package-linux": "electron-packager ./electron-dist --platform=linux --arch=x64 --out=./package"
   },
   "author": "",
   "license": "GNU 3",
@@ -31,6 +33,7 @@
     "css-loader": "^1.0.0",
     "ejs-loader": "^0.3.1",
     "electron": "^4.0.0-beta.11",
+    "electron-packager": "^13.0.1",
     "eslint": "^4.19.1",
     "eslint-config-google": "^0.9.1",
     "html-loader": "^0.5.5",
