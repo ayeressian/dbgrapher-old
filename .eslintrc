@@ -11,6 +11,9 @@
   "parserOptions": {
     "sourceType": "module"
   },
+  "globals": {
+    "IS_ELECTRON": true
+  },
   "rules": {
     "require-jsdoc": "off",
     "max-len": [

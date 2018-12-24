@@ -4,15 +4,12 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
+  target: 'electron-renderer',
   devtool: 'source-map',
-  devServer: {
-    contentBase: './dist',
-    port: 9999
-  },
   entry: './src/renderer/index.js',
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist')
+    path: path.resolve(__dirname, 'electron-dist/renderer')
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -20,7 +17,7 @@ module.exports = {
       inject: true
     }),
     new webpack.DefinePlugin({
-      IS_ELECTRON: false
+      IS_ELECTRON: true
     })
   ],
   module: {

@@ -3,9 +3,6 @@ import 'db-viewer-component';
 import './component/table-dialog-component/TableDialogComponent.js';
 // import 'normalize.css';
 import './style.css';
-import {
-  isElectron
-} from './util';
 
 // if ('serviceWorker' in navigator) {
 //   navigator.serviceWorker
@@ -60,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  if (isElectron) {
+  if (IS_ELECTRON) {
     import('./el-menu').then((module) => {
       module.default(() => currentSchema, setSchema);
     });

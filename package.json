@@ -7,10 +7,14 @@
     "start": "webpack-dev-server --mode development --open",
     "build-prod": "webpack --mode=production",
     "build-dev": "webpack --mode=development",
-    "build-electron-dev": "webpack --config ./electron-webpack.config.js --mode=development --watch",
-    "build-electron-prod": "webpack --config ./electron-webpack.config.js --mode=production",
-    "estart": "electron-webpack dev",
-    "deploy": "npm run build-prod && git push origin `git subtree split --prefix dist master`:gh-pages --force"
+    "deploy": "npm run build-prod && git push origin `git subtree split --prefix dist master`:gh-pages --force",
+    "build-electron-main-prod": "webpack --mode=production --config ./main.webpack.config.js ",
+    "build-electron-renderer-prod": "webpack --mode=production --config ./renderer.webpack.config.js",
+    "build-electron-main-dev": "webpack --watch --mode=development --config ./main.webpack.config.js ",
+    "build-electron-renderer-dev": "webpack --watch --mode=development --config ./renderer.webpack.config.js",
+    "build-electron-dev": "concurrently \"npm:build-electron-main-dev\" \"npm:build-electron-renderer-dev\"",
+    "build-electron-prod": "concurrently \"npm:build-electron-main-prod\" \"npm:build-electron-renderer-prod\"",
+    "run-electron": "electron ./electron-dist/"
   },
   "author": "",
   "license": "GNU 3",
@@ -27,7 +31,6 @@
     "css-loader": "^1.0.0",
     "ejs-loader": "^0.3.1",
     "electron": "^4.0.0-beta.11",
-    "electron-webpack": "^2.6.1",
     "eslint": "^4.19.1",
     "eslint-config-google": "^0.9.1",
     "html-loader": "^0.5.5",
@@ -40,10 +43,5 @@
     "webpack": "^4.19.1",
     "webpack-cli": "^3.1.0",
     "webpack-dev-server": "^3.1.8"
-  },
-  "electronWebpack": {
-    "renderer": {
-      "webpackConfig": "webpack.renderer.additions.js"
-    }
   }
 }

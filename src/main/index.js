@@ -6,45 +6,39 @@ import {
   app,
   BrowserWindow,
   dialog,
-  Menu
+  Menu,
+  protocol
 } from 'electron';
 import * as path from 'path';
 import {
-  format as formatUrl
+  format
 } from 'url';
-
-console.log('here', process.env.ELECTRON_WEBPACK_WDS_PORT);
-
-const isDevelopment = process.env.NODE_ENV !== 'production';
 
 // global reference to mainWindow (necessary to prevent window from being garbage collected)
 let mainWindow;
 
 function createMainWindow() {
-  const window = new BrowserWindow();
-  debugger;
-  if (isDevelopment) {
-    window.webContents.openDevTools();
-  }
+  // Create the browser window.
+  mainWindow = new BrowserWindow({
+    width: 800,
+    height: 600
+  });
+  mainWindow.loadURL(format({
+    pathname: path.join(__dirname, '../renderer/index.html'),
+    protocol: 'file',
+    slashes: true
+  }));
 
-  if (isDevelopment) {
-    window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`);
-  } else {
-    window.loadURL(formatUrl({
-      pathname: path.join(__dirname, 'index.html'),
-      protocol: 'file',
-      slashes: true
-    }));
-  }
+  mainWindow.webContents.openDevTools();
 
-  window.on('closed', () => {
+  mainWindow.on('closed', () => {
     mainWindow = null;
   });
 
-  window.webContents.on('devtools-opened', () => {
-    window.focus();
+  mainWindow.webContents.on('devtools-opened', () => {
+    mainWindow.focus();
     setImmediate(() => {
-      window.focus();
+      mainWindow.focus();
     });
   });
 
@@ -61,7 +55,7 @@ function createMainWindow() {
     submenu: [{
         label: 'Open',
         click() {
-          dialog.showOpenDialog(window, {
+          dialog.showOpenDialog(mainWindow, {
             properties: ['openFile'],
             filters: [{
               name: 'json',
@@ -69,7 +63,7 @@ function createMainWindow() {
             }]
           }, (filePaths) => {
             if (filePaths && filePaths.length > 0) {
-              window.webContents.send('file-to-load', filePaths[0]);
+              mainWindow.webContents.send('file-to-load', filePaths[0]);
             }
           });
         }
@@ -77,7 +71,7 @@ function createMainWindow() {
       {
         label: 'Close Window',
         click() {
-          window.close();
+          mainWindow.close();
         }
       }
     ]
@@ -85,7 +79,7 @@ function createMainWindow() {
   const menu = Menu.buildFromTemplate(template);
   Menu.setApplicationMenu(menu);
 
-  return window;
+  return mainWindow;
 }
 
 // quit application when all windows are closed

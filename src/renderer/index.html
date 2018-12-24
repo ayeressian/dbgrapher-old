@@ -7,14 +7,6 @@
   <meta charset="UTF-8">
   <meta name="web" content="yes">
 
-  <% if (htmlWebpackPlugin.options.nodeModules) { %>
-    <!-- Add `node_modules/` to global paths so `require` works properly in development -->
-    <script>
-      require('module').globalPaths.push('<%= htmlWebpackPlugin.options.nodeModules.replace(/\\/g, '\\\\') %>');
-      require('source-map-support/source-map-support.js').install();
-    </script>
-  <% } %>
-
 </head>
 
 <body>
