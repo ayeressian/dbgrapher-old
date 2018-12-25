@@ -371,11 +371,11 @@ class TableDialogComponent extends HTMLElement {
   }
 
   _openDialog() {
-    this._dialog.open();
+    this._dialog.isOpen = true;
   }
 
   _closeDialog() {
-    this._dialog.close();
+    this._dialog.isOpen = false;
   }
 
   _setOnColumnNameChange(columnNameInput, tableColumnNameOption) {
