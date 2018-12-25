@@ -8,7 +8,7 @@ module.exports = {
   entry: './src/main/index.js',
   output: {
     filename: 'index.js',
-    path: path.resolve(__dirname, 'electron-dist/main')
+    path: path.resolve(__dirname, '../electron-dist/main')
   },
   node: {
     __dirname: false
@@ -17,7 +17,7 @@ module.exports = {
     new CopyWebpackPlugin([
       {
         from: './electron-package.json',
-        to: path.resolve(__dirname, 'electron-dist/package.json')
+        to: path.resolve(__dirname, '../electron-dist/package.json')
       }
     ])
   ]

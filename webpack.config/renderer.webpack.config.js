@@ -9,7 +9,7 @@ module.exports = {
   entry: './src/renderer/index.js',
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'electron-dist/renderer')
+    path: path.resolve(__dirname, '../electron-dist/renderer')
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -29,7 +29,7 @@ module.exports = {
           'css-loader'
         ],
         exclude: [
-          path.resolve(__dirname, './src/renderer/component')
+          path.resolve(__dirname, '../src/renderer/component')
         ]
       },
       {
@@ -39,7 +39,7 @@ module.exports = {
           'css-loader'
         ],
         include: [
-          path.resolve(__dirname, './src/renderer/component')
+          path.resolve(__dirname, '../src/renderer/component')
         ]
       },
       {

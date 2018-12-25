@@ -6,7 +6,7 @@ const webpack = require('webpack');
 module.exports = {
   devtool: 'source-map',
   devServer: {
-    contentBase: './dist',
+    contentBase: 'dist',
     port: 9999
   },
   entry: './src/renderer/index.js',
@@ -16,7 +16,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: 'src/renderer/index.html',
+      template: './src/renderer/index.html',
       inject: true
     }),
     new webpack.DefinePlugin({
@@ -32,7 +32,7 @@ module.exports = {
           'css-loader'
         ],
         exclude: [
-          path.resolve(__dirname, './src/renderer/component')
+          path.resolve(__dirname, '../src/renderer/component')
         ]
       },
       {
@@ -42,7 +42,7 @@ module.exports = {
           'css-loader'
         ],
         include: [
-          path.resolve(__dirname, './src/renderer/component')
+          path.resolve(__dirname, '../src/renderer/component')
         ]
       },
       {
