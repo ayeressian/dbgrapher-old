@@ -2,7 +2,7 @@ import {
   Pool
 } from 'pg';
 
-export const call = async ({user, host, database, password, port}) => {
+export default async ({user, host, database, password, port}) => {
   const pool = new Pool({
     user,
     host,

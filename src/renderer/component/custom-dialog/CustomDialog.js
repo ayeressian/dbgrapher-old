@@ -16,12 +16,12 @@ class CustomDialog extends HTMLElement {
     this._dialog = shadowDom.querySelector('.dialog');
   }
 
-  set isOpen(val) {
-    if (val) {
-      this._dialog.style.display = 'block';
-    } else {
-      this._dialog.style.display = 'none';
-    }
+  open() {
+    this._dialog.style.display = 'block';
+  }
+
+  close() {
+    this._dialog.style.display = 'none';
   }
 }
 

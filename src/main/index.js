@@ -53,6 +53,11 @@ function createMainWindow() {
   }, {
     label: 'File',
     submenu: [{
+        label: 'New',
+        click: () => {
+          mainWindow.webContents.send('file-new');
+        }
+      }, {
         label: 'Open',
         click() {
           dialog.showOpenDialog(mainWindow, {
@@ -72,6 +77,21 @@ function createMainWindow() {
         label: 'Close Window',
         click() {
           mainWindow.close();
+        }
+      }
+    ]
+  }, {
+    label: 'Operations',
+    submenu: [{
+        label: 'Generate view from DB schema',
+        click: () => {
+          mainWindow.webContents.send('gen-view-from-db');
+        }
+      },
+      {
+        label: 'Generate DB schema from view',
+        click: () => {
+          mainWindow.webContents.send('gen-db-from-view');
         }
       }
     ]
