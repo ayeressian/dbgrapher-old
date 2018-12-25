@@ -1,7 +1,7 @@
 import 'menu-bar-component';
 import 'db-viewer-component';
+import './component/custom-dialog/CustomDialog.js';
 import './component/table-dialog-component/TableDialogComponent.js';
-// import 'normalize.css';
 import './style.css';
 
 // if ('serviceWorker' in navigator) {
