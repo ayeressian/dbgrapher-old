@@ -5,7 +5,7 @@ class TableDialogComponent extends HTMLElement {
     super();
 
     const shadowDom = this.attachShadow({
-      mode: 'closed'
+      mode: 'open'
     });
     shadowDom.innerHTML = template;
 
@@ -32,8 +32,7 @@ class TableDialogComponent extends HTMLElement {
   }
 
   _ready(shadowdom) {
-    this._modal = shadowdom.getElementById('modal');
-    // this._dialog = shadowdom.querySelector('dialog');
+    this._dialog = shadowdom.querySelector('custom-dialog');
     this._dialogTitleElem = shadowdom.querySelector('#dialog_title');
     this._dialogNameInput = shadowdom.querySelector('#name_input');
     this._dialogColumnsElem = shadowdom.querySelector('#columns');
@@ -372,11 +371,11 @@ class TableDialogComponent extends HTMLElement {
   }
 
   _openDialog() {
-    this._modal.style.display = 'block';
+    this._dialog.open();
   }
 
   _closeDialog() {
-    this._modal.style.display = 'none';
+    this._dialog.close();
   }
 
   _setOnColumnNameChange(columnNameInput, tableColumnNameOption) {
