@@ -34,7 +34,6 @@ electron.ipcRenderer.on('file-to-load', async (sender, filePath) => {
 
 electron.ipcRenderer.on('file-save', async (sender, filePath) => {
   const schema = _getCurrentSchema();
-  console.log(filePath);
   fs.writeFileSync(filePath, JSON.stringify(schema), 'utf-8');
 });
 

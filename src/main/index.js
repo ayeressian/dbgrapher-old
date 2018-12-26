@@ -6,8 +6,7 @@ import {
   app,
   BrowserWindow,
   dialog,
-  Menu,
-  protocol
+  Menu
 } from 'electron';
 import * as path from 'path';
 import {
@@ -37,7 +36,7 @@ function createMainWindow() {
 
   mainWindow.webContents.on('devtools-opened', () => {
     mainWindow.focus();
-    setImmediate(() => {
+    setTimeout(() => {
       mainWindow.focus();
     });
   });
