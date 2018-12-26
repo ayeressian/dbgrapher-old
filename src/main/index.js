@@ -96,7 +96,7 @@ function createMainWindow() {
     submenu: [{
         label: 'Generate view from DB schema',
         click: () => {
-          mainWindow.webContents.send('gen-view-from-db');
+          mainWindow.webContents.send('gen-view-from-db-psql');
         }
       },
       {

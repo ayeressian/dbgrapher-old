@@ -1,4 +1,5 @@
 import template from './template.js';
+import {defaults} from 'pg';
 
 class DbConnectionDialog extends HTMLElement {
   constructor() {
@@ -24,14 +25,12 @@ class DbConnectionDialog extends HTMLElement {
     this._portInput = shadowDom.querySelector('#port');
 
     this._cancelBtn.addEventListener('click', (event) => {
-      this._clean();
       this._dialog.close();
     });
 
     this._connectBtn.addEventListener('click', (event) => {
       this._dialog.close();
       this._resultResolve(this._collectData());
-      this._clean();
     });
   }
 
@@ -45,17 +44,17 @@ class DbConnectionDialog extends HTMLElement {
     };
   }
 
-  _clean() {
-    this._userInput.value = null;
-    this._passwordInput.value = null;
-    this._databaseInput.value = null;
-    this._hostInput.value = null;
-    this._portInput.value = null;
+  _reset() {
+    this._userInput.value = defaults.user;
+    this._passwordInput.value = defaults.password;
+    this._databaseInput.value = defaults.database;
+    this._hostInput.value = defaults.host;
+    this._portInput.value = defaults.port;
   }
 
   getConnectionInfo() {
+    this._reset();
     this._dialog.open();
-
     this._resultPromise = new Promise((resolve, reject) => {
       this._resultResolve = resolve;
     });

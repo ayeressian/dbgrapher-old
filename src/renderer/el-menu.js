@@ -20,7 +20,7 @@ electron.ipcRenderer.on('file-to-load', async (sender, filePath) => {
   let schema;
   try {
     schema = window.require(filePath);
-  } catch (e) {
+  } catch {
     alert('Selected file doesn\'t contain valid JSON.');
     return;
   }
@@ -37,9 +37,14 @@ electron.ipcRenderer.on('file-save', async (sender, filePath) => {
   fs.writeFileSync(filePath, JSON.stringify(schema), 'utf-8');
 });
 
-electron.ipcRenderer.on('gen-view-from-db', async (sender) => {
+electron.ipcRenderer.on('gen-view-from-db-psql', async (sender) => {
   const data = await dbConnectionDialog.getConnectionInfo();
-  const schema = await fromDbToView(data);
+  let schema;
+  try {
+    schema = await fromDbToView(data);
+  } catch {
+    alert('Can\'t connect to DB with provided data');
+  }
   _setSchema(schema);
 });
 electron.ipcRenderer.on('gen-db-from-view', async (sender) => {
