@@ -3,6 +3,7 @@ import {
 } from './validate-schema.js';
 import electron from 'electron';
 import fromDbToView from './generation/psql/fromDbToView.js';
+import fs from 'fs';
 
 let _getCurrentSchema;
 let _setSchema;
@@ -31,6 +32,12 @@ electron.ipcRenderer.on('file-to-load', async (sender, filePath) => {
   _setSchema(schema);
 });
 
+electron.ipcRenderer.on('file-save', async (sender, filePath) => {
+  const schema = _getCurrentSchema();
+  console.log(filePath);
+  fs.writeFileSync(filePath, JSON.stringify(schema), 'utf-8');
+});
+
 electron.ipcRenderer.on('gen-view-from-db', async (sender) => {
   const data = await dbConnectionDialog.getConnectionInfo();
   const schema = await fromDbToView(data);
@@ -40,7 +47,7 @@ electron.ipcRenderer.on('gen-db-from-view', async (sender) => {
   // TODO
 });
 
-export default (getCurrentSchema, setSchema) => {
-  _getCurrentSchema = getComputedStyle;
+export default (getCurrentSchema, setSchema, getSchema) => {
+  _getCurrentSchema = getCurrentSchema;
   _setSchema = setSchema;
 };

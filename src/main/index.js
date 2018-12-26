@@ -58,6 +58,18 @@ function createMainWindow() {
           mainWindow.webContents.send('file-new');
         }
       }, {
+        label: 'Save',
+        click: () => {
+          dialog.showSaveDialog(mainWindow, {
+            filters: [{
+              name: 'JSON',
+              extensions: ['json']
+            }]
+          }, (filePaths) => {
+            mainWindow.webContents.send('file-save', filePaths);
+          });
+        }
+      }, {
         label: 'Open',
         click() {
           dialog.showOpenDialog(mainWindow, {
