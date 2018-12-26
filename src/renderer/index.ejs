@@ -12,7 +12,9 @@
 <body>
   <input type="file" id="file_open" style="display:none" accept="application/json" />
   <table-dialog></table-dialog>
+  <% if (IS_ELECTRON) { %>
   <db-connection-dialog></db-connection-dialog>
+  <% } %>
   <div class="main_container">
     <menu-bar></menu-bar>
     <ul class="left_toolbar">

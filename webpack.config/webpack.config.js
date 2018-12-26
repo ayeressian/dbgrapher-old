@@ -12,15 +12,16 @@ module.exports = {
   entry: './src/renderer/index.js',
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist')
+    path: path.resolve(__dirname, '../dist')
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      template: './src/renderer/index.html',
-      inject: true
-    }),
     new webpack.DefinePlugin({
       IS_ELECTRON: false
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'index.html',
+      template: 'src/renderer/index.ejs',
+      inject: true
     })
   ],
   module: {

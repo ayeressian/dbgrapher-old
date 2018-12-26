@@ -12,12 +12,13 @@ module.exports = {
     path: path.resolve(__dirname, '../electron-dist/renderer')
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      template: 'src/renderer/index.html',
-      inject: true
-    }),
     new webpack.DefinePlugin({
       IS_ELECTRON: true
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'index.html',
+      template: 'src/renderer/index.ejs',
+      inject: true
     })
   ],
   module: {

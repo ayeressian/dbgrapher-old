@@ -2,8 +2,11 @@ import 'menu-bar-component';
 import 'db-viewer-component';
 import './component/custom-dialog/CustomDialog.js';
 import './component/table-dialog-component/TableDialogComponent.js';
-import './component/db-connection-dialog/DbConnectionDialog.js';
 import './style.css';
+
+if (IS_ELECTRON) {
+  import('./component/db-connection-dialog/DbConnectionDialog.js');
+}
 
 // if ('serviceWorker' in navigator) {
 //   navigator.serviceWorker
