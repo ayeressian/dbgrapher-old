@@ -4,6 +4,7 @@ import {
 import electron from 'electron';
 import fromDbToView from './generation/psql/fromDbToView.js';
 import fs from 'fs';
+import {loadFile} from './operations.js';
 
 let _getCurrentSchema;
 let _setSchema;
@@ -17,19 +18,7 @@ document.querySelector('.main_container').style['grid-template-rows'] = 0;
 menuBarElem.remove();
 fileOpenElem.remove();
 electron.ipcRenderer.on('file-to-load', async (sender, filePath) => {
-  let schema;
-  try {
-    schema = window.require(filePath);
-  } catch {
-    alert('Selected file doesn\'t contain valid JSON.');
-    return;
-  }
-  const jsonValidation = validateJson(schema);
-  if (!jsonValidation) {
-    alert('Selected file doesn\'t have correct Db designer file format');
-    return;
-  }
-  _setSchema(schema);
+  loadFile(filePath, _setSchema);
 });
 
 electron.ipcRenderer.on('file-save', async (sender, filePath) => {
