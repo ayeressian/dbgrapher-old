@@ -67,12 +67,16 @@ export default function setup(getCurrentSchema, setSchema) {
     };
   });
 
-  menuBarElem.addEventListener('select', (event) => {
+  menuBarElem.addEventListener('select', async (event) => {
     switch (event.detail) {
       case 'new':
         if (getCurrentSchema().tables.length > 0) {
           if (window.confirm('Do you want to create a new schema? All the unsaved progress will be lost.')) {
-            setSchema({tables: []});
+            const chooseDbDialog = document.querySelector('choose-db-dialog');
+            const dbType = await chooseDbDialog.getDbType();
+            if (dbType != null) {
+              setSchema({tables: [], dbType});
+            }
           }
         }
         break;
