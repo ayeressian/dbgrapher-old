@@ -13,12 +13,18 @@ class ChooseDBDialog extends HTMLElement {
   }
 
   _ready(shadowDom) {
-    this._dialog = shadowDom.querySelector('.dialog');
+    this._dialog = shadowDom.querySelector('custom-dialog');
     this._okBtn = shadowDom.querySelector('#ok');
+    this._cancelBtn = shadowDom.querySelector('#cancel');
     this._typeSelect = shadowDom.querySelector('select');
     this._okBtn.addEventListener('click', () => {
       const selectedValue = this._typeSelect.options[this._typeSelect.selectedIndex].value;
       this._resultResolve(selectedValue);
+      this._dialog.close();
+    });
+    this._cancelBtn.addEventListener('click', () => {
+      this._dialog.close();
+      this._resultResolve(null);
     });
   }
 

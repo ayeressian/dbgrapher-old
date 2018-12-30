@@ -2,7 +2,9 @@ import 'menu-bar-component';
 import 'db-viewer-component';
 import './component/custom-dialog/CustomDialog.js';
 import './component/table-dialog-component/TableDialogComponent.js';
+import './component/welcome-dialog/WelcomeDialog.js';
 import './style.css';
+import './component/choose-db-dialog/ChooseDBDialog.js';
 
 if (IS_ELECTRON) {
   import('./component/db-connection-dialog/DbConnectionDialog.js');
@@ -23,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const createTableBtn = document.querySelector('.create_table');
   // const createRelationBtn = document.querySelector('.create_relation');
   const tableDialogElem = document.querySelector('table-dialog');
+  const welcomeDialog = document.querySelector('welcome-dialog');
 
   tableDialogElem.types = types;
 
@@ -70,4 +73,8 @@ document.addEventListener('DOMContentLoaded', () => {
       module.default(() => currentSchema, setSchema);
     });
   }
+
+  welcomeDialog.getSchema().then((schema) => {
+    setSchema(schema);
+  });
 });
