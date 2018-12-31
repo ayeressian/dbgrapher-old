@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // const createRelationBtn = document.querySelector('.create_relation');
   const tableDialogElem = document.querySelector('table-dialog');
   const welcomeDialog = document.querySelector('welcome-dialog');
+  const mainContainer = document.querySelector('.main_container');
 
   tableDialogElem.types = types;
 
@@ -73,8 +74,9 @@ document.addEventListener('DOMContentLoaded', () => {
       module.default(() => currentSchema, setSchema);
     });
   }
-
+  mainContainer.style.display = 'none';
   welcomeDialog.getSchema().then((schema) => {
+    mainContainer.style.display = 'grid';
     setSchema(schema);
   });
 });
