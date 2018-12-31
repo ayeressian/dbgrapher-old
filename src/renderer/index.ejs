@@ -10,15 +10,18 @@
 </head>
 
 <body>
+  <% if (IS_ELECTRON) { %>
+  <db-connection-dialog></db-connection-dialog>
+  <% } else { %>
   <input type="file" id="file_open" style="display:none" accept="application/json" />
+  <% } %>
   <table-dialog></table-dialog>
   <welcome-dialog></welcome-dialog>
   <choose-db-dialog></choose-db-dialog>
-  <% if (IS_ELECTRON) { %>
-  <db-connection-dialog></db-connection-dialog>
-  <% } %>
   <div class="main_container">
+    <% if (!IS_ELECTRON) { %>
     <menu-bar></menu-bar>
+    <% } %>
     <ul class="left_toolbar">
       <li class="action create_table" title="Create Table"></li>
       <!-- <li class="action create_relation" title="Create Relation"></li> -->
