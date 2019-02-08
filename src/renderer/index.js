@@ -21,7 +21,7 @@ const types = [
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
-  const dbDesignerElem = document.querySelector('db-designer');
+  const dbViewer = document.querySelector('db-viewer');
   const createTableBtn = document.querySelector('.create_table');
   // const createRelationBtn = document.querySelector('.create_relation');
   const tableDialogElem = document.querySelector('table-dialog');
@@ -34,21 +34,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function setSchema(schema) {
     currentSchema = JSON.parse(JSON.stringify(schema));
-    dbDesignerElem.schema = schema;
+    dbViewer.schema = schema;
   }
 
-  dbDesignerElem.addEventListener('tableDblClick', (event) => {
+  dbViewer.addEventListener('tableDblClick', (event) => {
     tableDialogElem.open(currentSchema, event.detail).then((result) => {
       setSchema(result);
     });
   });
 
-  dbDesignerElem.addEventListener('click', (event) => {
+  dbViewer.addEventListener('click', (event) => {
     // const cord = getDbDesignerClickCords(event);
   });
 
 
-  dbDesignerElem.addEventListener('tableMove', (event) => {
+  dbViewer.addEventListener('tableMove', (event) => {
     const table = currentSchema.tables.find((table) => table.name === event.detail.name);
     if (table.pos == null) {
       table.pos = {};
