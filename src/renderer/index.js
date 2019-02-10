@@ -20,7 +20,7 @@ const types = [
   'int', 'string'
 ];
 
-document.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('load', () => {
   const dbViewer = document.querySelector('db-viewer');
   const createTableBtn = document.querySelector('.create_table');
   // const createRelationBtn = document.querySelector('.create_relation');
