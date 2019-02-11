@@ -74,9 +74,9 @@ window.addEventListener('load', () => {
       module.default(() => currentSchema, setSchema);
     });
   }
-  mainContainer.style.display = 'none';
+  mainContainer.style.visibility = 'hidden';
   welcomeDialog.getSchema().then((schema) => {
-    mainContainer.style.display = 'grid';
+    mainContainer.style.visibility = 'visible';
     setSchema(schema);
   });
 });
