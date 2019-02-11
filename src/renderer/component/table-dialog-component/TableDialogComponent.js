@@ -364,7 +364,7 @@ class TableDialogComponent extends HTMLElement {
   _openCreate(schema) {
     this._dialogTitleElem.innerHTML = 'Create Table';
     this._dialogCreateEditBtn.innerHTML = 'Create';
-    this._dialogSchemaTable = {name: '', columns: []};
+    this._dialogSchemaTable = {name: '', columns: [], pos: 'center'};
     schema.tables.push(this._dialogSchemaTable);
     this._openDialog();
     return Promise.resolve();
