@@ -32,6 +32,10 @@ body {
   background-color: #dddddd;
 }
 
+.left_toolbar .action.active {
+  background-color: #d68080;
+}
+
 .left_toolbar .action.create_table {
   background-image: url(./asset/image/icon_create_table_48x48.png);
 }

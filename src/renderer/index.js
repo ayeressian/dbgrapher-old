@@ -17,6 +17,7 @@ const types = [
 window.addEventListener('load', () => {
   const dbViewer = document.querySelector('db-viewer');
   const createTableBtn = document.querySelector('.create_table');
+  const createRelationBtn = document.querySelector('.create_relation');
   const tableDialogElem = document.querySelector('table-dialog');
   const welcomeDialog = document.querySelector('welcome-dialog');
   const mainContainer = document.querySelector('.main_container');
@@ -52,5 +53,36 @@ window.addEventListener('load', () => {
   welcomeDialog.getSchema().then((schema) => {
     mainContainer.style.visibility = 'visible';
     setSchema(schema);
+  });
+
+
+  const createRelation = (from, to) => {
+    const schema = dbViewer.schema;
+    const fromTable = schema.tables.find((table) => table.name == from);
+    const toTable = schema.tables.find((table) => table.name == to);
+
+    const fromPks = fromTable.columns.filter((column) => column.pk == true);
+    toTable
+
+
+  };
+
+  let firstClick;
+  let from;
+  createRelationBtn.addEventListener('click', () => {
+    createRelationBtn.classList.toggle('active');
+    if (createRelationBtn.classList.contains('active')) {
+      firstClick = true;
+      dbViewer.addEventListener('tableClick', (event) => {
+        if (firstClick) {
+          from = event.detail.name;
+          firstClick = false;
+        } else {
+          const to = event.detail.name;
+          firstClick = true;
+          createRelation(from, to);
+        }
+      });
+    }
   });
 });
