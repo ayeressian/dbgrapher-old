@@ -62,27 +62,55 @@ window.addEventListener('load', () => {
     const toTable = schema.tables.find((table) => table.name == to);
 
     const fromPks = fromTable.columns.filter((column) => column.pk == true);
-    toTable
+    fromPks.forEach((fromPk) => {
+      let columnName;
+      let counter = 0;
 
+      do {
+        if (counter === 0) {
+          columnName = `fk_${fromTable.name}_${fromPk.name}`;
+        } else {
+          columnName = `fk_${fromTable.name}_${fromPk.name}_${counter}`;
+        }
+        counter++;
+      } while (toTable.columns.find((column) => column.name === columnName));
 
+      toTable.columns.push({
+        name: columnName,
+        required: true,
+        fk: {
+          table: fromTable.name,
+          column: fromPk.name
+        }
+      });
+    });
+    dbViewer.schema = schema;
   };
 
   let firstClick;
   let from;
   createRelationBtn.addEventListener('click', () => {
     createRelationBtn.classList.toggle('active');
+    function tableClickHandler(event) {
+      if (firstClick) {
+        from = event.detail.name;
+        firstClick = false;
+      } else {
+        const to = event.detail.name;
+        firstClick = true;
+        createRelation(from, to);
+        createRelationBtn.classList.remove('active');
+        dbViewer.removeEventListener('tableClick', tableClickHandler);
+        console.log('removed');
+      }
+    }
     if (createRelationBtn.classList.contains('active')) {
       firstClick = true;
-      dbViewer.addEventListener('tableClick', (event) => {
-        if (firstClick) {
-          from = event.detail.name;
-          firstClick = false;
-        } else {
-          const to = event.detail.name;
-          firstClick = true;
-          createRelation(from, to);
-        }
-      });
+      dbViewer.addEventListener('tableClick', tableClickHandler);
+      console.log('added');
+    } else {
+      dbViewer.removeEventListener('tableClick', tableClickHandler);
+      console.log('removed');
     }
   });
 });
