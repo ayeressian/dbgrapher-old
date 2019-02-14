@@ -29,7 +29,7 @@ window.addEventListener('load', () => {
   }
 
   dbViewer.addEventListener('tableDblClick', (event) => {
-    tableDialogElem.open(dbViewer.schema, event.detail).then((result) => setSchema(result));
+    tableDialogElem.openEdit(dbViewer.schema, event.detail).then((result) => setSchema(result));
   });
 
   if (IS_ELECTRON) {
@@ -104,7 +104,13 @@ window.addEventListener('load', () => {
 
 
   function createTableHandler(event) {
-    console.log(event.detail);
+    tableDialogElem.openCreate(dbViewer.schema, event.detail).then((result) => {
+      dbViewer.removeEventListener('viewportClick', createTableHandler);
+      createTableBtn.classList.remove('active');
+      if (result) {
+        setSchema(result);
+      }
+    });
   }
   createTableBtn.addEventListener('click', () => {
     createTableBtn.classList.toggle('active');

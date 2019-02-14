@@ -361,15 +361,6 @@ class TableDialogComponent extends HTMLElement {
     return dialogColumn;
   }
 
-  _openCreate(schema) {
-    this._dialogTitleElem.innerHTML = 'Create Table';
-    this._dialogCreateEditBtn.innerHTML = 'Create';
-    this._dialogSchemaTable = {name: '', columns: [], pos: 'center'};
-    schema.tables.push(this._dialogSchemaTable);
-    this._openDialog();
-    return Promise.resolve();
-  }
-
   _openDialog() {
     this._dialog.open();
   }
@@ -422,44 +413,13 @@ class TableDialogComponent extends HTMLElement {
     dialogColumn.uqCheckbox.addEventListener('change', this._onPkUqChange.bind(this, dialogColumn.uqCheckbox, dialogColumn.pkCheckbox, dialogColumn));
   }
 
-  _openEdit(schema, table) {
-    this._dialogTitleElem.innerHTML = 'Edit Table';
-    this._dialogCreateEditBtn.innerHTML = 'Done';
-    this._schema = schema;
-    this._dialogSchemaTable = schema.tables.find((schemaTable) => schemaTable.name === table.name);
-
-    this._dialogNameInput.value = this._dialogSchemaTable.name;
-
-    // Create table columns
-    this._dialogSchemaTable.columns.forEach((column) => {
-      if (column.fk) {
-        this._createRelationRow(schema, column);
-      } else {
-        this._createColumnRow(column);
-      }
-    });
-
-    this._dialogColumns.concat(this._dialogFkColumns).forEach((dialogColumn) => {
-      this._setupPkUqCheckboxResultOnFkColumn(dialogColumn);
-    });
-
-    // FK column select boxes need to be populated based on selected FK table value.
-    this._dialogFkColumns.forEach((dialogFkColumn) => {
-      this._setupOnForeignTableSelectChange(dialogFkColumn);
-    });
-    this._openDialog();
-  }
-
-  open(schema, table) {
+  _open(schema, operation) {
     this._originalSchema = schema;
     this._schema = JSON.parse(JSON.stringify(schema));
 
     this._clear();
-    if (!table) {
-      this._openCreate(this._schema);
-    } else {
-      this._openEdit(this._schema, table);
-    }
+
+    operation(this._schema);
 
     this._dialogNameInput.addEventListener('keyup', () => {
       this._dialogTableSameFkOptions.forEach((option) => {
@@ -471,6 +431,46 @@ class TableDialogComponent extends HTMLElement {
     return new Promise((resolve, reject) => {
       this._dialogResolve = resolve;
       this._dialogReject = reject;
+    });
+  }
+
+  openCreate(schema, pos) {
+    return this._open(schema, (schema) => {
+      this._dialogTitleElem.innerHTML = 'Create Table';
+      this._dialogCreateEditBtn.innerHTML = 'Create';
+      this._dialogSchemaTable = {name: '', columns: [], pos: pos || 'center'};
+      schema.tables.push(this._dialogSchemaTable);
+      this._openDialog();
+    });
+  }
+
+  openEdit(schema, table) {
+    return this._open(schema, (schema) => {
+      this._dialogTitleElem.innerHTML = 'Edit Table';
+      this._dialogCreateEditBtn.innerHTML = 'Done';
+      this._schema = schema;
+      this._dialogSchemaTable = schema.tables.find((schemaTable) => schemaTable.name === table.name);
+
+      this._dialogNameInput.value = this._dialogSchemaTable.name;
+
+      // Create table columns
+      this._dialogSchemaTable.columns.forEach((column) => {
+        if (column.fk) {
+          this._createRelationRow(schema, column);
+        } else {
+          this._createColumnRow(column);
+        }
+      });
+
+      this._dialogColumns.concat(this._dialogFkColumns).forEach((dialogColumn) => {
+        this._setupPkUqCheckboxResultOnFkColumn(dialogColumn);
+      });
+
+      // FK column select boxes need to be populated based on selected FK table value.
+      this._dialogFkColumns.forEach((dialogFkColumn) => {
+        this._setupOnForeignTableSelectChange(dialogFkColumn);
+      });
+      this._openDialog();
     });
   }
 }
