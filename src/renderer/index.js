@@ -89,28 +89,25 @@ window.addEventListener('load', () => {
 
   let firstClick;
   let from;
+  function tableClickHandler(event) {
+    if (firstClick) {
+      from = event.detail.name;
+      firstClick = false;
+    } else {
+      const to = event.detail.name;
+      firstClick = true;
+      createRelation(from, to);
+      createRelationBtn.classList.remove('active');
+      dbViewer.removeEventListener('tableClick', tableClickHandler);
+    }
+  }
   createRelationBtn.addEventListener('click', () => {
     createRelationBtn.classList.toggle('active');
-    function tableClickHandler(event) {
-      if (firstClick) {
-        from = event.detail.name;
-        firstClick = false;
-      } else {
-        const to = event.detail.name;
-        firstClick = true;
-        createRelation(from, to);
-        createRelationBtn.classList.remove('active');
-        dbViewer.removeEventListener('tableClick', tableClickHandler);
-        console.log('removed');
-      }
-    }
     if (createRelationBtn.classList.contains('active')) {
       firstClick = true;
       dbViewer.addEventListener('tableClick', tableClickHandler);
-      console.log('added');
     } else {
       dbViewer.removeEventListener('tableClick', tableClickHandler);
-      console.log('removed');
     }
   });
 });
