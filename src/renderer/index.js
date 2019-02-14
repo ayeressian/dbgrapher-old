@@ -32,14 +32,6 @@ window.addEventListener('load', () => {
     tableDialogElem.open(dbViewer.schema, event.detail).then((result) => setSchema(result));
   });
 
-  createTableBtn.addEventListener('click', () => {
-    tableDialogElem.open(dbViewer.schema).then((result) => {
-      if (result) {
-        setSchema(result);
-      }
-    });
-  });
-
   if (IS_ELECTRON) {
     import('./el-menu.js').then((module) => {
       module.default(() => dbViewer.schema, setSchema);
@@ -54,7 +46,6 @@ window.addEventListener('load', () => {
     mainContainer.style.visibility = 'visible';
     setSchema(schema);
   });
-
 
   const createRelation = (from, to) => {
     const schema = dbViewer.schema;
@@ -108,6 +99,19 @@ window.addEventListener('load', () => {
       dbViewer.addEventListener('tableClick', tableClickHandler);
     } else {
       dbViewer.removeEventListener('tableClick', tableClickHandler);
+    }
+  });
+
+
+  function createTableHandler(event) {
+    console.log(event.detail);
+  }
+  createTableBtn.addEventListener('click', () => {
+    createTableBtn.classList.toggle('active');
+    if (createTableBtn.classList.contains('active')) {
+      dbViewer.addEventListener('viewportClick', createTableHandler);
+    } else {
+      dbViewer.removeEventListener('viewportClick', createTableHandler);
     }
   });
 });
