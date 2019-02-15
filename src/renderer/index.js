@@ -14,6 +14,23 @@ const types = [
   'int', 'string'
 ];
 
+const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+const schemaHistory = [];
+let historyIndex = 0;
+const undo = () => {
+  if (historyIndex > 0) {
+    historyIndex--;
+    return schemaHistory[historyIndex];
+  }
+};
+const redo = () => {
+  if (historyIndex < schemaHistory.length - 1) {
+    historyIndex++;
+    return schemaHistory[historyIndex];
+  }
+};
+
+
 window.addEventListener('load', () => {
   const dbViewer = document.querySelector('db-viewer');
   const createTableBtn = document.querySelector('.create_table');
