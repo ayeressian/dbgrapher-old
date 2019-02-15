@@ -124,6 +124,7 @@ class TableDialogComponent extends HTMLElement {
 
   _setupEvents() {
     this._dialogCancelBtn.addEventListener('click', (event) => {
+      this._dialogResolve();
       this._closeDialog();
     });
 

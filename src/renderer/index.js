@@ -95,6 +95,8 @@ window.addEventListener('load', () => {
   createRelationBtn.addEventListener('click', () => {
     createRelationBtn.classList.toggle('active');
     if (createRelationBtn.classList.contains('active')) {
+      createTableBtn.classList.remove('active');
+      dbViewer.removeEventListener('viewportClick', createTableHandler);
       firstClick = true;
       dbViewer.addEventListener('tableClick', tableClickHandler);
     } else {
@@ -115,6 +117,8 @@ window.addEventListener('load', () => {
   createTableBtn.addEventListener('click', () => {
     createTableBtn.classList.toggle('active');
     if (createTableBtn.classList.contains('active')) {
+      createRelationBtn.classList.remove('active');
+      dbViewer.removeEventListener('tableClick', tableClickHandler);
       dbViewer.addEventListener('viewportClick', createTableHandler);
     } else {
       dbViewer.removeEventListener('viewportClick', createTableHandler);
