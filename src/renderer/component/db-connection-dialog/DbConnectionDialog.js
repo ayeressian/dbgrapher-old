@@ -34,6 +34,10 @@ class DbConnectionDialog extends HTMLElement {
     });
   }
 
+  isOpen() {
+    return this._dialog.isOpen();
+  }
+
   _collectData() {
     return {
       user: this._userInput.value,

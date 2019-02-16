@@ -5,6 +5,7 @@ import './component/table-dialog-component/TableDialogComponent.js';
 import './component/welcome-dialog/WelcomeDialog.js';
 import './style.css';
 import './component/choose-db-dialog/ChooseDBDialog.js';
+import UndoRedo from './UndoRedo';
 
 if (IS_ELECTRON) {
   import('./component/db-connection-dialog/DbConnectionDialog.js');
@@ -14,22 +15,7 @@ const types = [
   'int', 'string'
 ];
 
-const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
-const schemaHistory = [];
-let historyIndex = 0;
-const undo = () => {
-  if (historyIndex > 0) {
-    historyIndex--;
-    return schemaHistory[historyIndex];
-  }
-};
-const redo = () => {
-  if (historyIndex < schemaHistory.length - 1) {
-    historyIndex++;
-    return schemaHistory[historyIndex];
-  }
-};
-
+const undoRedo = new UndoRedo();
 
 window.addEventListener('load', () => {
   const dbViewer = document.querySelector('db-viewer');
@@ -39,29 +25,52 @@ window.addEventListener('load', () => {
   const welcomeDialog = document.querySelector('welcome-dialog');
   const mainContainer = document.querySelector('.main_container');
 
+  const setSchemaWithHistoryUpdate = (schema) => {
+    undoRedo.addState(schema);
+    dbViewer.schema = schema;
+  };
+
+  const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+  document.addEventListener('keydown', (event) => {
+    if (!tableDialogElem.isOpen() && !welcomeDialog.isOpen()) {
+      if (event.metaKey && event.keyCode === 90 && isMac) {
+        let schema;
+        if (event.shiftKey) {
+          console.log('redo');
+          schema = undoRedo.redo();
+        } else {
+          console.log('undo');
+          schema = undoRedo.undo();
+        }
+        if (schema) {
+          dbViewer.schema = schema;
+        }
+      }
+      if (event.keyCode == 91 && event.ctrlKey && !isMac) {
+        console.log('win asdfasdf');
+      }
+    }
+  }, false);
+
   tableDialogElem.types = types;
 
-  function setSchema(schema) {
-    dbViewer.schema = schema;
-  }
-
   dbViewer.addEventListener('tableDblClick', (event) => {
-    tableDialogElem.openEdit(dbViewer.schema, event.detail).then((result) => setSchema(result));
+    tableDialogElem.openEdit(dbViewer.schema, event.detail).then(setSchemaWithHistoryUpdate);
   });
 
   if (IS_ELECTRON) {
     import('./el-menu.js').then((module) => {
-      module.default(() => dbViewer.schema, setSchema);
+      module.default(() => dbViewer.schema, setSchemaWithHistoryUpdate);
     });
   } else {
     import('./menu.js').then((module) => {
-      module.default(() => dbViewer.schema, setSchema);
+      module.default(() => dbViewer.schema, setSchemaWithHistoryUpdate);
     });
   }
   mainContainer.style.visibility = 'hidden';
   welcomeDialog.getSchema().then((schema) => {
     mainContainer.style.visibility = 'visible';
-    setSchema(schema);
+    setSchemaWithHistoryUpdate(schema);
   });
 
   const createRelation = (from, to) => {
@@ -92,7 +101,7 @@ window.addEventListener('load', () => {
         }
       });
     });
-    dbViewer.schema = schema;
+    setSchemaWithHistoryUpdate(schema);
   };
 
   let firstClick;
@@ -127,7 +136,7 @@ window.addEventListener('load', () => {
       dbViewer.removeEventListener('viewportClick', createTableHandler);
       createTableBtn.classList.remove('active');
       if (result) {
-        setSchema(result);
+        setSchemaWithHistoryUpdate(result);
       }
     });
   }

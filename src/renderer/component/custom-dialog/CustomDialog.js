@@ -17,11 +17,17 @@ class CustomDialog extends HTMLElement {
   }
 
   open() {
+    this._isOpen = true;
     this._dialog.style.display = 'block';
   }
 
   close() {
+    this._isOpen = false;
     this._dialog.style.display = 'none';
+  }
+
+  isOpen() {
+    return this._isOpen;
   }
 }
 

@@ -47,6 +47,10 @@ class TableDialogComponent extends HTMLElement {
     this._setupEvents();
   }
 
+  isOpen() {
+    return this._dialog.isOpen();
+  }
+
   /**
    * When user clicks on Done.
    * @param {Event} event

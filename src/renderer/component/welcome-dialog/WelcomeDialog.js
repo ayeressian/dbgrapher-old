@@ -64,6 +64,10 @@ class WelcomeDialogComponent extends HTMLElement {
     });
   }
 
+  isOpen() {
+    return this._dialog.isOpen();
+  }
+
   getSchema() {
     this._dialog.open();
     this._resultPromise = new Promise((resolve, reject) => {
