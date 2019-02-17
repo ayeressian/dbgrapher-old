@@ -33,8 +33,8 @@ window.addEventListener('load', () => {
   const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
   document.addEventListener('keydown', (event) => {
     if (!tableDialogElem.isOpen() && !welcomeDialog.isOpen()) {
+      let schema;
       if (event.metaKey && event.keyCode === 90 && isMac) {
-        let schema;
         if (event.shiftKey) {
           console.log('redo');
           schema = undoRedo.redo();
@@ -42,20 +42,37 @@ window.addEventListener('load', () => {
           console.log('undo');
           schema = undoRedo.undo();
         }
-        if (schema) {
-          dbViewer.schema = schema;
+      }
+      if (event.ctrlKey && !isMac) {
+        if (event.keyCode === 90) {
+          schema = undoRedo.undo();
+        } else if (event.keyCode === 89) {
+          schema = undoRedo.redo();
         }
       }
-      if (event.keyCode == 91 && event.ctrlKey && !isMac) {
-        console.log('win asdfasdf');
+      if (schema) {
+        dbViewer.schema = schema;
       }
     }
   }, false);
 
   tableDialogElem.types = types;
 
+  let isCreateTable = false;
+  let isCreateRelation = false;
+
+  dbViewer.addEventListener('tableMoveEnd', () => {
+    if (!isCreateTable && !isCreateRelation) {
+      undoRedo.addState(dbViewer.schema);
+    }
+  });
+
   dbViewer.addEventListener('tableDblClick', (event) => {
-    tableDialogElem.openEdit(dbViewer.schema, event.detail).then(setSchemaWithHistoryUpdate);
+    tableDialogElem.openEdit(dbViewer.schema, event.detail).then((schema) => {
+      if (schema) {
+        setSchemaWithHistoryUpdate(schema);
+      }
+    });
   });
 
   if (IS_ELECTRON) {
@@ -115,13 +132,16 @@ window.addEventListener('load', () => {
       firstClick = true;
       createRelation(from, to);
       createRelationBtn.classList.remove('active');
+      isCreateRelation = false;
       dbViewer.removeEventListener('tableClick', tableClickHandler);
     }
   }
   createRelationBtn.addEventListener('click', () => {
     createRelationBtn.classList.toggle('active');
     if (createRelationBtn.classList.contains('active')) {
+      isCreateRelation = true;
       createTableBtn.classList.remove('active');
+      isCreateTable = false;
       dbViewer.removeEventListener('viewportClick', createTableHandler);
       firstClick = true;
       dbViewer.addEventListener('tableClick', tableClickHandler);
@@ -135,6 +155,7 @@ window.addEventListener('load', () => {
     tableDialogElem.openCreate(dbViewer.schema, event.detail).then((result) => {
       dbViewer.removeEventListener('viewportClick', createTableHandler);
       createTableBtn.classList.remove('active');
+      isCreateTable = false;
       if (result) {
         setSchemaWithHistoryUpdate(result);
       }
@@ -143,7 +164,9 @@ window.addEventListener('load', () => {
   createTableBtn.addEventListener('click', () => {
     createTableBtn.classList.toggle('active');
     if (createTableBtn.classList.contains('active')) {
+      isCreateTable = true;
       createRelationBtn.classList.remove('active');
+      isCreateRelation = false;
       dbViewer.removeEventListener('tableClick', tableClickHandler);
       dbViewer.addEventListener('viewportClick', createTableHandler);
     } else {
