@@ -29,8 +29,7 @@ class App {
 
   _ready() {
     this._dbViewer = document.querySelector('db-viewer');
-    this._createTableBtn = document.querySelector('.create_table');
-    this._createRelationBtn = document.querySelector('.create_relation');
+    this._sidePanel = document.querySelector('side-panel');
     this._tableDialogElem = document.querySelector('table-dialog');
     this._welcomeDialog = document.querySelector('welcome-dialog');
     this._mainContainer = document.querySelector('.main_container');
@@ -136,64 +135,55 @@ class App {
       });
     });
 
-    // let firstClick;
-    // let from;
+    let firstClick;
+    let from;
 
-    // const tableClickHandler = (event) => {
-    //   if (firstClick) {
-    //     from = event.detail.name;
-    //     firstClick = false;
-    //   } else {
-    //     const to = event.detail.name;
-    //     firstClick = true;
-    //     this._createRelation(from, to);
-    //     this._createRelationBtn.classList.remove('active');
-    //     this._isCreateRelation = false;
-    //     this._dbViewer.disableTableMovement = false;
-    //     this._dbViewer.removeEventListener('tableClick', tableClickHandler);
-    //   }
-    // };
+    const tableClickHandler = (event) => {
+      if (firstClick) {
+        from = event.detail.name;
+        firstClick = false;
+      } else {
+        const to = event.detail.name;
+        firstClick = true;
+        this._createRelation(from, to);
+        this._isCreateRelation = false;
+        this._dbViewer.disableTableMovement = false;
+        this._dbViewer.removeEventListener('tableClick', tableClickHandler);
+        this._sidePanel.selectNone();
+      }
+    };
 
-    // this._createRelationBtn.addEventListener('click', () => {
-    //   this._createRelationBtn.classList.toggle('active');
-    //   if (this._createRelationBtn.classList.contains('active')) {
-    //     this._dbViewer.disableTableMovement = true;
-    //     this._isCreateRelation = true;
-    //     this._createTableBtn.classList.remove('active');
-    //     this._isCreateTable = false;
-    //     this._dbViewer.removeEventListener('viewportClick', this._createTableHandler);
-    //     firstClick = true;
-    //     this._dbViewer.addEventListener('tableClick', tableClickHandler);
-    //   } else {
-    //     this._dbViewer.removeEventListener('tableClick', tableClickHandler);
-    //     this._dbViewer.disableTableMovement = false;
-    //     this._isCreateRelation = false;
-    //   }
-    // });
+    const createTableHandler = (event) => {
+      this._tableDialogElem.openCreate(this._dbViewer.schema, event.detail).then((result) => {
+        this._dbViewer.removeEventListener('viewportClick', createTableHandler);
+        this._isCreateTable = false;
+        this._sidePanel.selectNone();
+        if (result) {
+          this._setSchemaWithHistoryUpdate(result);
+        }
+      });
+    };
 
-    // const createTableHandler = (event) => {
-    //   this._tableDialogElem.openCreate(this._dbViewer.schema, event.detail).then((result) => {
-    //     this._dbViewer.removeEventListener('viewportClick', createTableHandler);
-    //     this._createTableBtn.classList.remove('active');
-    //     this._isCreateTable = false;
-    //     if (result) {
-    //       this._setSchemaWithHistoryUpdate(result);
-    //     }
-    //   });
-    // };
-
-    // this._createTableBtn.addEventListener('click', () => {
-    //   this._createTableBtn.classList.toggle('active');
-    //   if (this._createTableBtn.classList.contains('active')) {
-    //     this._isCreateTable = true;
-    //     this._createRelationBtn.classList.remove('active');
-    //     this._isCreateRelation = false;
-    //     this._dbViewer.removeEventListener('tableClick', tableClickHandler);
-    //     this._dbViewer.addEventListener('viewportClick', createTableHandler);
-    //   } else {
-    //     this._dbViewer.removeEventListener('viewportClick', createTableHandler);
-    //   }
-    // });
+    this._sidePanel.addEventListener('change', (event) => {
+      if (event.detail.selectedAction === 'createTable') {
+        this._isCreateTable = true;
+        this._isCreateRelation = false;
+        this._dbViewer.removeEventListener('tableClick', tableClickHandler);
+        this._dbViewer.addEventListener('viewportClick', createTableHandler);
+      } else if (event.detail.selectedAction === 'createRelation') {
+        this._dbViewer.disableTableMovement = true;
+        this._isCreateRelation = true;
+        this._isCreateTable = false;
+        this._dbViewer.removeEventListener('viewportClick', this._createTableHandler);
+        firstClick = true;
+        this._dbViewer.addEventListener('tableClick', tableClickHandler);
+      } else {
+        this._dbViewer.removeEventListener('viewportClick', createTableHandler);
+        this._dbViewer.removeEventListener('tableClick', tableClickHandler);
+        this._dbViewer.disableTableMovement = false;
+        this._isCreateRelation = false;
+      }
+    });
   }
 }
 
