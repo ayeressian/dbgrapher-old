@@ -1,0 +1,28 @@
+.left_toolbar {
+  padding: 0;
+  margin: 0;
+}
+
+.left_toolbar .action {
+  width: 60px;
+  height: 60px;
+  list-style-type: none;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.left_toolbar .action:hover {
+  background-color: #dddddd;
+}
+
+.left_toolbar .action.active {
+  background-color: #d68080;
+}
+
+.left_toolbar .action.create_table {
+  background-image: url(../../asset/image/icon_create_table_48x48.png);
+}
+
+.left_toolbar .action.create_relation {
+  background-image: url(../../asset/image/icon_create_relation_48x48.png);
+}
