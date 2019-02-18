@@ -95,6 +95,14 @@ class App {
     this._setSchemaWithHistoryUpdate(schema);
   }
 
+  _doubleClickEventHandler(event) {
+    this._tableDialogElem.openEdit(this._dbViewer.schema, event.detail).then((schema) => {
+      if (schema) {
+        this._setSchemaWithHistoryUpdate(schema);
+      }
+    });
+  }
+
   _setupEvents() {
     document.addEventListener('keydown', (event) => {
       if (!this._tableDialogElem.isOpen() && !this._welcomeDialog.isOpen()) {
@@ -127,13 +135,8 @@ class App {
       }
     });
 
-    this._dbViewer.addEventListener('tableDblClick', (event) => {
-      this._tableDialogElem.openEdit(this._dbViewer.schema, event.detail).then((schema) => {
-        if (schema) {
-          this._setSchemaWithHistoryUpdate(schema);
-        }
-      });
-    });
+    this._doubleClickEventHandler = this._doubleClickEventHandler.bind(this);
+    this._dbViewer.addEventListener('tableDblClick', this._doubleClickEventHandler);
 
     let firstClick;
     let from;
@@ -149,6 +152,7 @@ class App {
         this._isCreateRelation = false;
         this._dbViewer.disableTableMovement = false;
         this._dbViewer.removeEventListener('tableClick', tableClickHandler);
+        setTimeout(() => this._dbViewer.addEventListener('tableDblClick', this._doubleClickEventHandler));
         this._sidePanel.selectNone();
       }
     };
@@ -176,8 +180,10 @@ class App {
         this._isCreateTable = false;
         this._dbViewer.removeEventListener('viewportClick', this._createTableHandler);
         firstClick = true;
+        this._dbViewer.removeEventListener('tableDblClick', this._doubleClickEventHandler);
         this._dbViewer.addEventListener('tableClick', tableClickHandler);
       } else {
+        this._dbViewer.addEventListener('tableDblClick', this._doubleClickEventHandler);
         this._dbViewer.removeEventListener('viewportClick', createTableHandler);
         this._dbViewer.removeEventListener('tableClick', tableClickHandler);
         this._dbViewer.disableTableMovement = false;
