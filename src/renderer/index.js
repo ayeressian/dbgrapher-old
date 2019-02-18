@@ -15,83 +15,57 @@ const types = [
   'int', 'string'
 ];
 
-const undoRedo = new UndoRedo();
 
-window.addEventListener('load', () => {
-  const dbViewer = document.querySelector('db-viewer');
-  const createTableBtn = document.querySelector('.create_table');
-  const createRelationBtn = document.querySelector('.create_relation');
-  const tableDialogElem = document.querySelector('table-dialog');
-  const welcomeDialog = document.querySelector('welcome-dialog');
-  const mainContainer = document.querySelector('.main_container');
+class App {
+  constructor() {
+    window.addEventListener('load', this._ready.bind(this));
+    this._undoRedo = new UndoRedo();
+    this._isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
 
-  const setSchemaWithHistoryUpdate = (schema) => {
-    undoRedo.addState(schema);
-    dbViewer.schema = schema;
-  };
-
-  const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
-  document.addEventListener('keydown', (event) => {
-    if (!tableDialogElem.isOpen() && !welcomeDialog.isOpen()) {
-      let schema;
-      if (event.metaKey && event.keyCode === 90 && isMac) {
-        if (event.shiftKey) {
-          console.log('redo');
-          schema = undoRedo.redo();
-        } else {
-          console.log('undo');
-          schema = undoRedo.undo();
-        }
-      }
-      if (event.ctrlKey && !isMac) {
-        if (event.keyCode === 90) {
-          schema = undoRedo.undo();
-        } else if (event.keyCode === 89) {
-          schema = undoRedo.redo();
-        }
-      }
-      if (schema) {
-        dbViewer.schema = schema;
-      }
-    }
-  }, false);
-
-  tableDialogElem.types = types;
-
-  let isCreateTable = false;
-  let isCreateRelation = false;
-
-  dbViewer.addEventListener('tableMoveEnd', () => {
-    if (!isCreateTable && !isCreateRelation) {
-      undoRedo.addState(dbViewer.schema);
-    }
-  });
-
-  dbViewer.addEventListener('tableDblClick', (event) => {
-    tableDialogElem.openEdit(dbViewer.schema, event.detail).then((schema) => {
-      if (schema) {
-        setSchemaWithHistoryUpdate(schema);
-      }
-    });
-  });
-
-  if (IS_ELECTRON) {
-    import('./el-menu.js').then((module) => {
-      module.default(() => dbViewer.schema, setSchemaWithHistoryUpdate);
-    });
-  } else {
-    import('./menu.js').then((module) => {
-      module.default(() => dbViewer.schema, setSchemaWithHistoryUpdate);
-    });
+    this._isCreateTable = false;
+    this._isCreateRelation = false;
   }
-  mainContainer.style.visibility = 'hidden';
-  welcomeDialog.getSchema().then((schema) => {
-    mainContainer.style.visibility = 'visible';
-    setSchemaWithHistoryUpdate(schema);
-  });
 
-  const createRelation = (from, to) => {
-    const schema = dbViewer.schema;
+  _ready() {
+    this._dbViewer = document.querySelector('db-viewer');
+    this._createTableBtn = document.querySelector('.create_table');
+    this._createRelationBtn = document.querySelector('.create_relation');
+    this._tableDialogElem = document.querySelector('table-dialog');
+    this._welcomeDialog = document.querySelector('welcome-dialog');
+    this._mainContainer = document.querySelector('.main_container');
+
+    this._tableDialogElem.types = types;
+
+    this._mainContainer.style.visibility = 'hidden';
+    this._welcomeDialog.getSchema().then((schema) => {
+      this._mainContainer.style.visibility = 'visible';
+      this._setSchemaWithHistoryUpdate(schema);
+    });
+
+    this._menuSetup();
+
+    this._setupEvents();
+  }
+
+  _setSchemaWithHistoryUpdate(schema) {
+    this._undoRedo.addState(schema);
+    this._dbViewer.schema = schema;
+  }
+
+  _menuSetup() {
+    if (IS_ELECTRON) {
+      import('./el-menu.js').then((module) => {
+        module.default(() => this._dbViewer.schema, this._setSchemaWithHistoryUpdate);
+      });
+    } else {
+      import('./menu.js').then((module) => {
+        module.default(() => this._dbViewer.schema, this._setSchemaWithHistoryUpdate);
+      });
+    }
+  }
+
+  _createRelation(from, to) {
+    const schema = this._dbViewer.schema;
     const fromTable = schema.tables.find((table) => table.name == from);
     const toTable = schema.tables.find((table) => table.name == to);
 
@@ -118,59 +92,104 @@ window.addEventListener('load', () => {
         }
       });
     });
-    setSchemaWithHistoryUpdate(schema);
-  };
-
-  let firstClick;
-  let from;
-  function tableClickHandler(event) {
-    if (firstClick) {
-      from = event.detail.name;
-      firstClick = false;
-    } else {
-      const to = event.detail.name;
-      firstClick = true;
-      createRelation(from, to);
-      createRelationBtn.classList.remove('active');
-      isCreateRelation = false;
-      dbViewer.removeEventListener('tableClick', tableClickHandler);
-    }
+    this._setSchemaWithHistoryUpdate(schema);
   }
-  createRelationBtn.addEventListener('click', () => {
-    createRelationBtn.classList.toggle('active');
-    if (createRelationBtn.classList.contains('active')) {
-      isCreateRelation = true;
-      createTableBtn.classList.remove('active');
-      isCreateTable = false;
-      dbViewer.removeEventListener('viewportClick', createTableHandler);
-      firstClick = true;
-      dbViewer.addEventListener('tableClick', tableClickHandler);
-    } else {
-      dbViewer.removeEventListener('tableClick', tableClickHandler);
-    }
-  });
 
+  _setupEvents() {
+    document.addEventListener('keydown', (event) => {
+      if (!this._tableDialogElem.isOpen() && !this._welcomeDialog.isOpen()) {
+        let schema;
+        if (event.metaKey && event.keyCode === 90 && this._isMac) {
+          if (event.shiftKey) {
+            console.log('redo');
+            schema = this._undoRedo.redo();
+          } else {
+            console.log('undo');
+            schema = this._undoRedo.undo();
+          }
+        }
+        if (event.ctrlKey && !this._isMac) {
+          if (event.keyCode === 90) {
+            schema = this._undoRedo.undo();
+          } else if (event.keyCode === 89) {
+            schema = this._undoRedo.redo();
+          }
+        }
+        if (schema) {
+          this._dbViewer.schema = schema;
+        }
+      }
+    });
 
-  function createTableHandler(event) {
-    tableDialogElem.openCreate(dbViewer.schema, event.detail).then((result) => {
-      dbViewer.removeEventListener('viewportClick', createTableHandler);
-      createTableBtn.classList.remove('active');
-      isCreateTable = false;
-      if (result) {
-        setSchemaWithHistoryUpdate(result);
+    this._dbViewer.addEventListener('tableMoveEnd', () => {
+      if (!this._isCreateTable && !this._isCreateRelation) {
+        this._undoRedo.addState(this._dbViewer.schema);
+      }
+    });
+
+    this._dbViewer.addEventListener('tableDblClick', (event) => {
+      this._tableDialogElem.openEdit(this._dbViewer.schema, event.detail).then((schema) => {
+        if (schema) {
+          this._setSchemaWithHistoryUpdate(schema);
+        }
+      });
+    });
+
+    let firstClick;
+    let from;
+
+    const tableClickHandler = (event) => {
+      if (firstClick) {
+        from = event.detail.name;
+        firstClick = false;
+      } else {
+        const to = event.detail.name;
+        firstClick = true;
+        this._createRelation(from, to);
+        this._createRelationBtn.classList.remove('active');
+        this._isCreateRelation = false;
+        this._dbViewer.removeEventListener('tableClick', tableClickHandler);
+      }
+    };
+
+    this._createRelationBtn.addEventListener('click', () => {
+      this._createRelationBtn.classList.toggle('active');
+      if (this._createRelationBtn.classList.contains('active')) {
+        this._isCreateRelation = true;
+        this._createTableBtn.classList.remove('active');
+        this._isCreateTable = false;
+        this._dbViewer.removeEventListener('viewportClick', this._createTableHandler);
+        firstClick = true;
+        this._dbViewer.addEventListener('tableClick', tableClickHandler);
+      } else {
+        this._dbViewer.removeEventListener('tableClick', tableClickHandler);
+      }
+    });
+
+    const createTableHandler = (event) => {
+      this._tableDialogElem.openCreate(this._dbViewer.schema, event.detail).then((result) => {
+        this._dbViewer.removeEventListener('viewportClick', createTableHandler);
+        this._createTableBtn.classList.remove('active');
+        this._isCreateTable = false;
+        if (result) {
+          this._setSchemaWithHistoryUpdate(result);
+        }
+      });
+    };
+
+    this._createTableBtn.addEventListener('click', () => {
+      this._createTableBtn.classList.toggle('active');
+      if (this._createTableBtn.classList.contains('active')) {
+        this._isCreateTable = true;
+        this._createRelationBtn.classList.remove('active');
+        this._isCreateRelation = false;
+        this._dbViewer.removeEventListener('tableClick', tableClickHandler);
+        this._dbViewer.addEventListener('viewportClick', createTableHandler);
+      } else {
+        this._dbViewer.removeEventListener('viewportClick', createTableHandler);
       }
     });
   }
-  createTableBtn.addEventListener('click', () => {
-    createTableBtn.classList.toggle('active');
-    if (createTableBtn.classList.contains('active')) {
-      isCreateTable = true;
-      createRelationBtn.classList.remove('active');
-      isCreateRelation = false;
-      dbViewer.removeEventListener('tableClick', tableClickHandler);
-      dbViewer.addEventListener('viewportClick', createTableHandler);
-    } else {
-      dbViewer.removeEventListener('viewportClick', createTableHandler);
-    }
-  });
-});
+}
+
+new App();
