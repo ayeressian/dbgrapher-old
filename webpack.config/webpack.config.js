@@ -14,6 +14,9 @@ module.exports = {
     filename: 'bundle.js',
     path: path.resolve(__dirname, '../dist')
   },
+  node: {
+    __dirname: true
+  },
   plugins: [
     new webpack.DefinePlugin({
       IS_ELECTRON: false

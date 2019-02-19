@@ -1,21 +1,8 @@
-import template from './template.js';
+import Base from '../Base.js';
 
-class TableDialogComponent extends HTMLElement {
+class TableDialogComponent extends Base {
   constructor() {
-    super();
-
-    const shadowDom = this.attachShadow({
-      mode: 'open'
-    });
-    shadowDom.innerHTML = template;
-
-    this._dialogColumns = [];
-    this._dialogFkColumns = [];
-    this._dialogSchemaTable;
-
-    this._dialogTableSameFkOptions = [];
-
-    this._ready(shadowDom);
+    super(__dirname);
   }
 
   set types(types) {
@@ -32,6 +19,11 @@ class TableDialogComponent extends HTMLElement {
   }
 
   _ready(shadowdom) {
+    this._dialogColumns = [];
+    this._dialogFkColumns = [];
+    this._dialogSchemaTable;
+    this._dialogTableSameFkOptions = [];
+
     this._dialog = shadowdom.querySelector('custom-dialog');
     this._dialogTitleElem = shadowdom.querySelector('#dialog_title');
     this._dialogNameInput = shadowdom.querySelector('#name_input');

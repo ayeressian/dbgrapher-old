@@ -12,7 +12,8 @@
     "sourceType": "module"
   },
   "globals": {
-    "IS_ELECTRON": true
+    "IS_ELECTRON": true,
+    "__dirname": true
   },
   "rules": {
     "require-jsdoc": "off",

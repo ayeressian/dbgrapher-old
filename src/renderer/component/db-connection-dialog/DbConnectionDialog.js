@@ -1,16 +1,9 @@
-import template from './template.js';
 import {defaults} from 'pg';
+import Base from '../Base.js';
 
-class DbConnectionDialog extends HTMLElement {
+class DbConnectionDialog extends Base {
   constructor() {
-    super();
-
-    const shadowDom = this.attachShadow({
-      mode: 'open'
-    });
-    shadowDom.innerHTML = template;
-
-    this._ready(shadowDom);
+    super(__dirname);
   }
 
   _ready(shadowDom) {

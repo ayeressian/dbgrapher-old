@@ -1,20 +1,12 @@
-import template from './template.js';
+import Base from '../Base.js';
 
-class SidePanel extends HTMLElement {
+class SidePanel extends Base {
   constructor() {
-    super();
-
-    const shadowDom = this.attachShadow({
-      mode: 'open'
-    });
-    shadowDom.innerHTML = template;
-
-    this._dialogTableSameFkOptions = [];
-
-    this._ready(shadowDom);
+    super(__dirname);
   }
 
   _ready(shadowDom) {
+    this._dialogTableSameFkOptions = [];
     this._actions = shadowDom.querySelectorAll('.action');
 
     this._activeAction;

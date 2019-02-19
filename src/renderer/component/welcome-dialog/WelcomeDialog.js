@@ -1,17 +1,10 @@
-import template from './template.js';
+import Base from '../Base.js';
 import fileOpenSetup from '../../file_open_setup.js';
 import {loadFromFilePath} from '../../file_open_setup.js';
 
-class WelcomeDialogComponent extends HTMLElement {
+class WelcomeDialogComponent extends Base {
   constructor() {
-    super();
-
-    const shadowDom = this.attachShadow({
-      mode: 'open'
-    });
-    shadowDom.innerHTML = template;
-
-    this._ready(shadowDom);
+    super(__dirname);
   }
 
   _ready(shadowDom) {
