@@ -150,9 +150,11 @@ class App {
         firstClick = true;
         this._createRelation(from, to);
         this._isCreateRelation = false;
-        this._dbViewer.disableTableMovement = false;
         this._dbViewer.removeEventListener('tableClick', tableClickHandler);
-        setTimeout(() => this._dbViewer.addEventListener('tableDblClick', this._doubleClickEventHandler));
+        setTimeout(() => {
+          this._dbViewer.addEventListener('tableDblClick', this._doubleClickEventHandler);
+          this._dbViewer.disableTableMovement = false;
+        });
         this._sidePanel.selectNone();
       }
     };
