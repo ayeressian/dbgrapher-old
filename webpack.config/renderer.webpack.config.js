@@ -21,6 +21,9 @@ module.exports = {
       inject: true
     })
   ],
+  node: {
+    __dirname: true
+  },
   module: {
     rules: [
       {
