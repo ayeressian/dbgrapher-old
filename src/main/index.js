@@ -102,7 +102,9 @@ function createMainWindow() {
       {
         label: 'Generate DB schema from view',
         click: () => {
-          mainWindow.webContents.send('gen-db-from-view');
+          dialog.showSaveDialog(mainWindow, (filePaths) => {
+            mainWindow.webContents.send('gen-db-from-view', filePaths);
+          });
         }
       }
     ]

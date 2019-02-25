@@ -1,9 +1,15 @@
-export default async (schema) => {
+function psql(schema) {
   let sqlSchema = '';
-  schema.tables.forEeach((table) => {
+  schema.tables.forEach((table) => {
     let columnSql = '';
-    table.columns((column) => {
-      columnSql += `${column.name} ${column.type}`;
+    table.columns.forEach((column) => {
+      if (column.fk) {
+        const table = schema.tables.find((table) => table.name === column.fk.table);
+        const type = table.columns.find((_column) => _column.name === column.fk.column).type;
+        columnSql += `${column.name} ${type}`;
+      } else {
+        columnSql += `${column.name} ${column.type}`;
+      }
       if (column.uq === true) {
         columnSql += ' UNIQUE';
       }
@@ -25,4 +31,17 @@ export default async (schema) => {
   });
 
   return sqlSchema;
+}
+
+function mysql(schema) {
+  
+}
+
+export default (schema) => {
+  switch (schema.dbType) {
+    case 'psql':
+      return psql(schema);
+    case 'mysql':
+      return mysql(schema);
+  }
 };
