@@ -1,6 +1,5 @@
 import 'menu-bar-component';
 import 'db-viewer-component';
-import 'datalist-polyfill';
 import './component/custom-dialog/CustomDialog.js';
 import './component/table-dialog-component/TableDialogComponent.js';
 import './component/welcome-dialog/WelcomeDialog.js';

@@ -52,13 +52,12 @@ class TableDialogComponent extends Base {
     }
 
     let errorMessages = [];
-
     const formattedCollumns = this._dialogColumns.map((dialogColumn) => ({
       name: dialogColumn.columnNameInput.value,
       pk: dialogColumn.pkCheckbox.checked,
       uq: dialogColumn.uqCheckbox.checked,
       nn: dialogColumn.nnCheckbox.checked,
-      type: dialogColumn.typeSelect.value
+      type: dialogColumn.typeInput.value
     }));
 
     const formattedFkCollumns = this._dialogFkColumns.map((dialogFkColumn) => ({
@@ -334,14 +333,14 @@ class TableDialogComponent extends Base {
   _createColumnRow(column) {
     const result = this._createCommonRow(column);
     const typeTd = document.createElement('td');
-    const typeSelectInput = document.createElement('input');
-    typeSelectInput.setAttribute('list', 'dataTypes');
+    const typeInput = document.createElement('input');
+    typeInput.setAttribute('list', 'dataTypes');
 
     if (column) {
-      typeSelectInput.value = column.type;
+      typeInput.value = column.type;
     }
 
-    typeTd.appendChild(typeSelectInput);
+    typeTd.appendChild(typeInput);
 
     result.tr.insertBefore(typeTd, result.pkCheckbox.parentNode);
 
@@ -352,7 +351,7 @@ class TableDialogComponent extends Base {
       pkCheckbox: result.pkCheckbox,
       uqCheckbox: result.uqCheckbox,
       nnCheckbox: result.nnCheckbox,
-      typeSelectInput,
+      typeInput,
       removeBtn: result.removeBtn
     };
     const index = this._dialogColumns.push(dialogColumn) - 1;
