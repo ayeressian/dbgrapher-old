@@ -2,7 +2,7 @@ import electron from 'electron';
 import fromDbToView from './generation/psql/fromDbToView.js';
 import fs from 'fs';
 import {loadFromFilePath} from './file_open_setup.js';
-import fromViewToDbSchema from './generation/psql/fromViewToSQLSchema.js';
+import fromViewToDbSchema from './generation/psql/fromViewToDbSchema.js';
 
 let _getCurrentSchema;
 let _setSchema;
