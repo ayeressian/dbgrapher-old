@@ -102,10 +102,8 @@ class App {
         let schema;
         if (event.metaKey && event.keyCode === 90 && this._isMac) {
           if (event.shiftKey) {
-            console.log('redo');
             schema = this._undoRedo.redo();
           } else {
-            console.log('undo');
             schema = this._undoRedo.undo();
           }
         }
