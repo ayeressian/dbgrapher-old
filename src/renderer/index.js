@@ -1,5 +1,6 @@
 import 'menu-bar-component';
 import 'db-viewer-component';
+import 'datalist-polyfill';
 import './component/custom-dialog/CustomDialog.js';
 import './component/table-dialog-component/TableDialogComponent.js';
 import './component/welcome-dialog/WelcomeDialog.js';
@@ -11,11 +12,6 @@ import UndoRedo from './UndoRedo';
 if (IS_ELECTRON) {
   import('./component/db-connection-dialog/DbConnectionDialog.js');
 }
-
-const types = [
-  'int', 'string'
-];
-
 
 class App {
   constructor() {
@@ -33,8 +29,6 @@ class App {
     this._tableDialogElem = document.querySelector('table-dialog');
     this._welcomeDialog = document.querySelector('welcome-dialog');
     this._mainContainer = document.querySelector('.main_container');
-
-    this._tableDialogElem.types = types;
 
     this._mainContainer.style.visibility = 'hidden';
     this._welcomeDialog.getSchema().then((schema) => {

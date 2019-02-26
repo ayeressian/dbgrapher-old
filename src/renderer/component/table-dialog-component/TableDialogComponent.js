@@ -1,12 +1,9 @@
 import Base from '../Base.js';
+import dataTypes from '../../dataTypes.js';
 
 class TableDialogComponent extends Base {
   constructor() {
     super(__dirname);
-  }
-
-  set types(types) {
-    this._types = types;
   }
 
   _clear() {
@@ -314,6 +311,21 @@ class TableDialogComponent extends Base {
     return dialogFkColumn;
   }
 
+  _createDataList() {
+    const datalist = document.createElement('datalist');
+
+    this._types.forEach((type) => {
+      const typeOption = document.createElement('option');
+      typeOption.innerHTML = type;
+      typeOption.setAttribute('value', type);
+      datalist.appendChild(typeOption);
+    });
+
+    datalist.setAttribute('id', 'dataTypes');
+
+    this._dialog.prepend(datalist);
+  }
+
   /**
    * Creates a column.
    * @param   {Object} column   Schema column
@@ -322,20 +334,14 @@ class TableDialogComponent extends Base {
   _createColumnRow(column) {
     const result = this._createCommonRow(column);
     const typeTd = document.createElement('td');
-    const typeSelect = document.createElement('select');
-
-    this._types.forEach((type) => {
-      const typeOption = document.createElement('option');
-      typeOption.innerHTML = type;
-      typeOption.setAttribute('value', type);
-      typeSelect.appendChild(typeOption);
-    });
+    const typeSelectInput = document.createElement('input');
+    typeSelectInput.setAttribute('list', 'dataTypes');
 
     if (column) {
-      typeSelect.value = column.type;
+      typeSelectInput.value = column.type;
     }
 
-    typeTd.appendChild(typeSelect);
+    typeTd.appendChild(typeSelectInput);
 
     result.tr.insertBefore(typeTd, result.pkCheckbox.parentNode);
 
@@ -346,7 +352,7 @@ class TableDialogComponent extends Base {
       pkCheckbox: result.pkCheckbox,
       uqCheckbox: result.uqCheckbox,
       nnCheckbox: result.nnCheckbox,
-      typeSelect,
+      typeSelectInput,
       removeBtn: result.removeBtn
     };
     const index = this._dialogColumns.push(dialogColumn) - 1;
@@ -432,6 +438,8 @@ class TableDialogComponent extends Base {
   }
 
   openCreate(schema, pos) {
+    this._types = dataTypes[schema.dbType];
+    this._createDataList();
     return this._open(schema, (schema) => {
       this._dialogTitleElem.innerHTML = 'Create Table';
       this._dialogCreateEditBtn.innerHTML = 'Create';
@@ -442,6 +450,8 @@ class TableDialogComponent extends Base {
   }
 
   openEdit(schema, table) {
+    this._types = dataTypes[schema.dbType];
+    this._createDataList();
     return this._open(schema, (schema) => {
       this._dialogTitleElem.innerHTML = 'Edit Table';
       this._dialogCreateEditBtn.innerHTML = 'Done';
