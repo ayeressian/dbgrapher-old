@@ -28,6 +28,7 @@ class App {
     this._tableDialogElem = document.querySelector('table-dialog');
     this._welcomeDialog = document.querySelector('welcome-dialog');
     this._mainContainer = document.querySelector('.main_container');
+    this._chooseDbDialog = document.querySelector('choose-db-dialog');
 
     this._mainContainer.style.visibility = 'hidden';
     this._welcomeDialog.getSchema().then((schema) => {
@@ -41,8 +42,18 @@ class App {
   }
 
   _setSchemaWithHistoryUpdate(schema) {
-    this._undoRedo.addState(schema);
-    this._dbViewer.schema = schema;
+    if (!schema.dbType) {
+      this._chooseDbDialog.getDbType().then((type) => {
+        if (type) {
+          schema.dbType = type;
+          this._undoRedo.addState(schema);
+          this._dbViewer.schema = schema;
+        }
+      });
+    } else {
+      this._undoRedo.addState(schema);
+      this._dbViewer.schema = schema;
+    }
   }
 
   _menuSetup() {

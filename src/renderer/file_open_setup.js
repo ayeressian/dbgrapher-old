@@ -30,6 +30,7 @@ export default (fileOpenElem, setSchema) => {
 export const loadFromFilePath = (filePath, setSchema) => {
   let schema;
   try {
+    delete window.require.cache[window.require.resolve(filePath)];
     schema = window.require(filePath);
   } catch {
     alert(INVALID_JSON_MSG);
