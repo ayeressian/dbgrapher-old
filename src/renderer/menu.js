@@ -2,6 +2,7 @@ import {
   download
 } from './download.js';
 import fileOpenSetup from './file_open_setup.js';
+import fromViewToDbSchema from './generation/psql/fromViewToDbSchema.js';
 
 const config = {
   items: [{
@@ -20,6 +21,12 @@ const config = {
           title: 'Download'
         }
       ]
+    }, {
+      title: 'Operations',
+      items: [{
+        id: 'genDbSchemaFromView',
+        title: 'Generate DB schema from view'
+      }]
     },
     {
       id: 'help',
@@ -65,6 +72,9 @@ export default function setup(getCurrentSchema, setSchema) {
         break;
       case 'downloadSchema':
         download(JSON.stringify(getCurrentSchema()), 'schema.json', 'application/json');
+        break;
+      case 'genDbSchemaFromView':
+        download(fromViewToDbSchema(getCurrentSchema()), 'schema.sql', 'text/plain');
         break;
       case 'gitHub':
         {
