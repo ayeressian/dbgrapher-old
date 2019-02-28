@@ -76,6 +76,9 @@ export default function setup(getCurrentSchema, setSchema) {
       case 'genDbSchemaFromView':
         download(fromViewToDbSchema(getCurrentSchema()), 'schema.sql', 'text/plain');
         break;
+      case 'genViewFromDbSchema':
+        fileOpenElem.click();
+        break;
       case 'gitHub':
         {
           const win = window.open('https://github.com/ayeressian/db_designer_pwa', '_blank');
