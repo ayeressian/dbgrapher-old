@@ -23,7 +23,7 @@
   "dependencies": {
     "ajv": "^6.5.3",
     "db-viewer-component": "^3.4.2",
-    "menu-bar-component": "^1.0.13",
+    "menu-bar-component": "^1.0.14",
     "normalize.css": "^8.0.0"
   },
   "devDependencies": {
