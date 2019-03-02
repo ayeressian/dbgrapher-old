@@ -1,6 +1,5 @@
 import Base from '../Base.js';
-import fileOpenSetup from '../../file_open_setup.js';
-import {loadFromFilePath} from '../../file_open_setup.js';
+import {setupOpenSchema, loadFromFilePath, setupDbScehmaFileOpen} from '../../fileOpenSetup.js';
 
 class WelcomeDialogComponent extends Base {
   constructor() {
@@ -10,6 +9,7 @@ class WelcomeDialogComponent extends Base {
   _ready(shadowDom) {
     this._newFile = shadowDom.querySelector('#new-file');
     this._openFile = shadowDom.querySelector('#open-file');
+    this._importSqlFile = shadowDom.querySelector('#import-sql-file');
     this._dialog = shadowDom.querySelector('custom-dialog');
     this._chooseDbDialog = shadowDom.querySelector('choose-db-dialog');
 
@@ -35,13 +35,26 @@ class WelcomeDialogComponent extends Base {
         });
       });
     } else {
-      const fileOpenELem = document.getElementById('file_open');
-      fileOpenSetup(fileOpenELem, (schema) => {
+      const fileOpenELem = shadowDom.getElementById('file_open');
+      const dbSchemaFileOpen = shadowDom.getElementById('db_schema_file_open');
+      const setSchema = (schema) => {
         this._dialog.close();
         this._resultResolve(schema);
-      });
+      };
+      setupOpenSchema(fileOpenELem, setSchema);
       this._openFile.addEventListener('click', () => {
         fileOpenELem.click();
+      });
+      this._importSqlFile.addEventListener('click', () => {
+        this._dialog.close();
+        this._chooseDbDialog.getDbType().then((dbType) => {
+          if (dbType == null) {
+            this._dialog.open();
+            return;
+          }
+          setupDbScehmaFileOpen(dbSchemaFileOpen, setSchema, dbType);
+          dbSchemaFileOpen.click();
+        });
       });
     }
 

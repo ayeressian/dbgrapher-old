@@ -1,8 +1,8 @@
 import {
   download
 } from './download.js';
-import fileOpenSetup from './file_open_setup.js';
-import fromViewToDbSchema from './generation/psql/fromViewToDbSchema.js';
+import {setupOpenSchema, setupDbScehmaFileOpen} from './fileOpenSetup.js';
+import psqlFromViewToDbSchema from './generation/psql/fromViewToDbSchema.js';
 
 const config = {
   items: [{
@@ -22,10 +22,13 @@ const config = {
         }
       ]
     }, {
-      title: 'Operations',
+      title: 'import/export',
       items: [{
-        id: 'genDbSchemaFromView',
-        title: 'Generate DB schema from view'
+        id: 'exportSql',
+        title: 'Export SQL'
+      }, {
+        id: 'importSql',
+        title: 'Import SQL'
       }]
     },
     {
@@ -51,8 +54,24 @@ const config = {
 export default function setup(getCurrentSchema, setSchema) {
   const menuBarElem = document.querySelector('menu-bar');
   const fileOpenElem = document.getElementById('file_open');
+  const dbSchemaFileOpenElem = document.getElementById('db_schema_file_open');
+  const chooseDbDialog = document.querySelector('choose-db-dialog');
 
-  fileOpenSetup(fileOpenElem, setSchema);
+  setupOpenSchema(fileOpenElem, setSchema);
+  setupDbScehmaFileOpen(dbSchemaFileOpenElem, setSchema, () => {
+    return chooseDbDialog.getDbType();
+  });
+
+  const genDbSchemaFromView = () => {
+    let result;
+    const schema = getCurrentSchema();
+    switch (schema.dbType) {
+      case 'psql':
+        result = psqlFromViewToDbSchema(schema);
+        break;
+    }
+    download(result, 'schema.sql', 'text/plain');
+  };
 
   menuBarElem.addEventListener('select', async (event) => {
     switch (event.detail) {
@@ -73,11 +92,11 @@ export default function setup(getCurrentSchema, setSchema) {
       case 'downloadSchema':
         download(JSON.stringify(getCurrentSchema()), 'schema.json', 'application/json');
         break;
-      case 'genDbSchemaFromView':
-        download(fromViewToDbSchema(getCurrentSchema()), 'schema.sql', 'text/plain');
+      case 'exportSql':
+        genDbSchemaFromView();
         break;
-      case 'genViewFromDbSchema':
-        fileOpenElem.click();
+      case 'importSql':
+        dbSchemaFileOpenElem.click();
         break;
       case 'gitHub':
         {

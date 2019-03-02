@@ -1,4 +1,4 @@
-function psql(schema) {
+export default (schema) => {
   let sqlSchema = '';
   schema.tables.forEach((table, index) => {
     let columnSql = '';
@@ -34,11 +34,4 @@ function psql(schema) {
   });
 
   return sqlSchema;
-}
-
-export default (schema) => {
-  switch (schema.dbType) {
-    case 'psql':
-      return psql(schema);
-  }
 };

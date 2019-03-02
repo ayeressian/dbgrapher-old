@@ -58,7 +58,7 @@ class App {
 
   _menuSetup() {
     if (IS_ELECTRON) {
-      import('./el-menu.js').then((module) => {
+      import('./elMenu.js/index.js').then((module) => {
         module.default(() => this._dbViewer.schema, this._setSchemaWithHistoryUpdate.bind(this));
       });
     } else {

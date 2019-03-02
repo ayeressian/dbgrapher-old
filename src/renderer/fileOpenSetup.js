@@ -1,11 +1,14 @@
 import {
   validateJson
 } from './validate-schema.js';
+import psqlFromDbSchemaToView from './generation/psql/fromDbSchemaToView.js';
 
 const INVALID_JSON_MSG = 'Selected file doesn\'t contain valid JSON.';
 const INVALID_FILE_FORMAT = 'Selected file doesn\'t have correct Db designer file format';
 
-export default (fileOpenElem, setSchema) => {
+const INVALID_SQL_FILE_FORMAT = 'Selected file doesn\'t have correct schema format';
+
+export const setupOpenSchema = (fileOpenElem, setSchema) => {
   fileOpenElem.addEventListener('change', (event) => {
     const reader = new FileReader();
     reader.readAsText(event.target.files[0]);
@@ -42,4 +45,27 @@ export const loadFromFilePath = (filePath, setSchema) => {
     return;
   }
   setSchema(schema);
+};
+
+export const setupDbScehmaFileOpen = async (dbSchemaFileOpenElem, setSchema, getDbType) => {
+  dbSchemaFileOpenElem.addEventListener('change', (event) => {
+    const reader = new FileReader();
+    reader.readAsText(event.target.files[0]);
+    reader.onload = (event) => {
+      getDbType().then((dbType) => {
+        let parseFunction;
+        switch (dbType) {
+          case 'psql':
+            parseFunction = psqlFromDbSchemaToView;
+            break;
+        }
+        try {
+          const schema = parseFunction(event.target.result);
+          setSchema(schema);
+        } catch {
+          alert(INVALID_SQL_FILE_FORMAT);
+        }
+      });
+    };
+  });
 };

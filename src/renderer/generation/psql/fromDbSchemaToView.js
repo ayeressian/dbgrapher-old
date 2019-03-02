@@ -45,4 +45,6 @@ export default (sql) => {
       columns
     });
   });
+  result.dbType = 'psql';
+  return result;
 };

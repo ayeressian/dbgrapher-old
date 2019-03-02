@@ -1,8 +1,8 @@
 import electron from 'electron';
 import fromDbToView from './generation/psql/fromDbToView.js';
 import fs from 'fs';
-import {loadFromFilePath} from './file_open_setup.js';
-import fromViewToDbSchema from './generation/psql/fromViewToDbSchema.js';
+import {loadFromFilePath} from './fileOpenSetup.js';
+import psqlFromViewToDbSchema from './generation/psql/fromViewToDbSchema.js';
 
 let _getCurrentSchema;
 let _setSchema;
@@ -39,7 +39,14 @@ electron.ipcRenderer.on('gen-view-from-db-psql', async (sender) => {
   _setSchema(schema);
 });
 electron.ipcRenderer.on('gen-db-from-view', async (sender, filePath) => {
-  fs.writeFileSync(filePath, fromViewToDbSchema(_getCurrentSchema()), 'utf-8');
+  let result;
+  const schema = _getCurrentSchema();
+  switch (schema.dbType) {
+    case 'psql':
+      result = psqlFromViewToDbSchema();
+      break;
+  }
+  fs.writeFileSync(filePath, result, 'utf-8');
 });
 
 export default (getCurrentSchema, setSchema, getSchema) => {
