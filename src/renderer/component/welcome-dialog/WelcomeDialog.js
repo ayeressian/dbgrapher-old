@@ -52,7 +52,7 @@ class WelcomeDialogComponent extends Base {
             this._dialog.open();
             return;
           }
-          setupDbScehmaFileOpen(dbSchemaFileOpen, setSchema, dbType);
+          setupDbScehmaFileOpen(dbSchemaFileOpen, setSchema, () => Promise.resolve(dbType));
           dbSchemaFileOpen.click();
         });
       });
