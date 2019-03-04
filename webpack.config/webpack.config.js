@@ -1,4 +1,3 @@
-/* global require, module, __dirname */
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const webpack = require('webpack');
@@ -59,6 +58,10 @@ module.exports = {
           'url-loader?limit=10000',
           'img-loader'
         ]
+      },
+      {
+        test: /\.sql$/i,
+        use: 'raw-loader',
       }
     ]
   }

@@ -16,7 +16,9 @@
     "build-electron-prod": "concurrently \"npm:build-electron-main-prod\" \"npm:build-electron-renderer-prod\"",
     "start-electron": "electron ./electron-dist/",
     "package-darwin": "electron-packager ./electron-dist --platform=darwin --arch=x64 --out=./package",
-    "package-linux": "electron-packager ./electron-dist --platform=linux --arch=x64 --out=./package"
+    "package-linux": "electron-packager ./electron-dist --platform=linux --arch=x64 --out=./package",
+    "test": "mocha-webpack \"test/**/*.js\" --mode development --webpack-config=./webpack.config/webpack.config.js",
+    "test:watch": "npm run test -- --watch"
   },
   "author": "",
   "license": "GNU 3",
@@ -29,6 +31,7 @@
   },
   "devDependencies": {
     "babel-eslint": "^8.2.6",
+    "chai": "^4.2.0",
     "concurrently": "^4.1.0",
     "copy-webpack-plugin": "^4.6.0",
     "css-loader": "^1.0.0",
@@ -41,7 +44,11 @@
     "html-webpack-plugin": "^3.2.0",
     "http-server": "^0.11.1",
     "img-loader": "^3.0.0",
+    "mocha": "^6.0.2",
+    "mocha-loader": "^2.0.1",
+    "mocha-webpack": "^2.0.0-beta.0",
     "pg": "^7.7.1",
+    "raw-loader": "^1.0.0",
     "style-loader": "^0.23.0",
     "to-string-loader": "^1.1.5",
     "url-loader": "^1.1.1",
