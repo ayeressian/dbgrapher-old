@@ -28,7 +28,8 @@
     "db-viewer-component": "^3.4.2",
     "menu-bar-component": "^1.0.14",
     "normalize.css": "^8.0.0",
-    "pg-query-emscripten": "^0.1.0"
+    "pg-query-emscripten": "^0.1.0",
+    "sql-ddl-to-json-schema": "^3.0.0"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.6",
