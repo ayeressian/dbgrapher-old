@@ -49,7 +49,7 @@ export default (sql) => {
         switch (constraint.contype) {
           case PRIMARY_KEY_CONSTRAINT_TYPE:
           constraint.keys.forEach((key) => {
-            const column = columns.find((column) => column.name === key);
+            const column = columns.find((column) => column.name === key.String.str);
             column.pk = true;
           });
           break;

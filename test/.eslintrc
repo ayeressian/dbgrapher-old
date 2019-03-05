@@ -1,6 +1,8 @@
 {
   "globals": {
       "describe": "readonly",
-      "it": "readonly"
+      "it": "readonly",
+      "require": "readonly",
+      "module": "readonly"
   }
 }
