@@ -1,0 +1,68 @@
+
+> db-designer@1.0.0 test /Users/arayeressian/Documents/db-designer
+> mocha-webpack "test/**/*.js" --mode development --webpack-config=./webpack.config/webpack.config.js
+
+process_process_process_process_process_process_process_process_process_process darwin
+ WEBPACK  Compiling...
+
+ WEBPACK  Compiled successfully in 2190ms
+
+ MOCHA  Testing...
+
+AAAAAAAAAAAA true undefined
+here undefined
+ RUNTIME EXCEPTION  Exception occurred while loading your tests
+
+TypeError: Cannot read property 'match' of undefined
+    at Object.staticInit (/Users/arayeressian/Documents/db-designer/dist/webpack:/node_modules/pg-query-emscripten/pg_query.js:2067:1)
+    at /Users/arayeressian/Documents/db-designer/dist/webpack:/node_modules/pg-query-emscripten/pg_query.js:5451:1
+    at Object.<anonymous> (/Users/arayeressian/Documents/db-designer/dist/webpack:/node_modules/pg-query-emscripten/pg_query.js:100297:2)
+    at Object../node_modules/pg-query-emscripten/pg_query.js (/Users/arayeressian/Documents/db-designer/dist/bundle.js:129498:30)
+    at __webpack_require__ (/Users/arayeressian/Documents/db-designer/dist/webpack:/webpack/bootstrap:19:1)
+    at Module../src/renderer/generation/psql/fromDbSchemaToView.js (/Users/arayeressian/Documents/db-designer/dist/webpack:/src/renderer/generation/psql/fromDbSchemaToView.js:1:1)
+    at __webpack_require__ (/Users/arayeressian/Documents/db-designer/dist/webpack:/webpack/bootstrap:19:1)
+    at Module../test/generation/psql/fromDbSchemaToView/fromDbSchemaToView.spec.js (/Users/arayeressian/Documents/db-designer/dist/webpack:/test/generation/psql/fromDbSchemaToView/fromDbSchemaToView.spec.js:1:1)
+    at __webpack_require__ (/Users/arayeressian/Documents/db-designer/dist/webpack:/webpack/bootstrap:19:1)
+    at run (/Users/arayeressian/Documents/db-designer/dist/webpack:/node_modules/mocha-webpack/lib/entry.js:3:20)
+    at Array.forEach (<anonymous>)
+    at Object.<anonymous> (/Users/arayeressian/Documents/db-designer/dist/webpack:/node_modules/mocha-webpack/lib/entry.js:10:1)
+    at Object../node_modules/mocha-webpack/lib/entry.js (/Users/arayeressian/Documents/db-designer/dist/bundle.js:27949:30)
+    at __webpack_require__ (/Users/arayeressian/Documents/db-designer/dist/webpack:/webpack/bootstrap:19:1)
+    at ./node_modules/asn1.js/lib/asn1.js.asn1 (/Users/arayeressian/Documents/db-designer/dist/webpack:/webpack/bootstrap:83:1)
+    at Object.<anonymous> (/Users/arayeressian/Documents/db-designer/dist/bundle.js:87:10)
+    at Module._compile (internal/modules/cjs/loader.js:689:30)
+    at Object._module2.default._extensions.(anonymous function) [as .js] (/Users/arayeressian/Documents/db-designer/node_modules/mocha-webpack/lib/util/registerRequireHook.js:148:12)
+    at Module.load (internal/modules/cjs/loader.js:599:32)
+    at tryModuleLoad (internal/modules/cjs/loader.js:538:12)
+    at Function.Module._load (internal/modules/cjs/loader.js:530:3)
+    at Module.require (internal/modules/cjs/loader.js:637:17)
+    at require (internal/modules/cjs/helpers.js:22:18)
+    at /Users/arayeressian/Documents/db-designer/node_modules/mocha/lib/mocha.js:327:36
+    at Array.forEach (<anonymous>)
+    at Mocha.loadFiles (/Users/arayeressian/Documents/db-designer/node_modules/mocha/lib/mocha.js:324:14)
+    at Mocha.run (/Users/arayeressian/Documents/db-designer/node_modules/mocha/lib/mocha.js:801:10)
+    at /Users/arayeressian/Documents/db-designer/node_modules/mocha-webpack/lib/runner/TestRunner.js:191:27
+    at /Users/arayeressian/Documents/db-designer/node_modules/mocha-webpack/lib/webpack/compiler/registerReadyCallback.js:26:7
+    at AsyncSeriesHook.eval [as callAsync] (eval at create (/Users/arayeressian/Documents/db-designer/node_modules/tapable/lib/HookCodeFactory.js:32:10), <anonymous>:18:1)
+    at AsyncSeriesHook.lazyCompileHook (/Users/arayeressian/Documents/db-designer/node_modules/tapable/lib/Hook.js:154:20)
+    at emitRecords.err (/Users/arayeressian/Documents/db-designer/node_modules/webpack/lib/Compiler.js:257:22)
+    at Compiler.emitRecords (/Users/arayeressian/Documents/db-designer/node_modules/webpack/lib/Compiler.js:371:39)
+    at emitAssets.err (/Users/arayeressian/Documents/db-designer/node_modules/webpack/lib/Compiler.js:251:10)
+    at hooks.afterEmit.callAsync.err (/Users/arayeressian/Documents/db-designer/node_modules/webpack/lib/Compiler.js:357:14)
+    at AsyncSeriesHook.eval [as callAsync] (eval at create (/Users/arayeressian/Documents/db-designer/node_modules/tapable/lib/HookCodeFactory.js:32:10), <anonymous>:6:1)
+    at AsyncSeriesHook.lazyCompileHook (/Users/arayeressian/Documents/db-designer/node_modules/tapable/lib/Hook.js:154:20)
+    at asyncLib.forEach.err (/Users/arayeressian/Documents/db-designer/node_modules/webpack/lib/Compiler.js:354:27)
+    at /Users/arayeressian/Documents/db-designer/node_modules/neo-async/async.js:2825:7
+    at done (/Users/arayeressian/Documents/db-designer/node_modules/neo-async/async.js:2861:11)
+    at /Users/arayeressian/Documents/db-designer/node_modules/neo-async/async.js:2813:7
+    at MemoryFileSystem.writeFile (/Users/arayeressian/Documents/db-designer/node_modules/memory-fs/lib/MemoryFileSystem.js:328:9)
+    at writeOut (/Users/arayeressian/Documents/db-designer/node_modules/webpack/lib/Compiler.js:338:29)
+    at asyncLib.forEach (/Users/arayeressian/Documents/db-designer/node_modules/webpack/lib/Compiler.js:348:7)
+    at baseEach (/Users/arayeressian/Documents/db-designer/node_modules/neo-async/async.js:2416:9)
+    at Object.each (/Users/arayeressian/Documents/db-designer/node_modules/neo-async/async.js:2850:9)
+    at emitFiles (/Users/arayeressian/Documents/db-designer/node_modules/webpack/lib/Compiler.js:311:13)
+    at Immediate._onImmediate (/Users/arayeressian/Documents/db-designer/node_modules/memory-fs/lib/MemoryFileSystem.js:288:4)
+    at runCallback (timers.js:705:18)
+    at tryOnImmediate (timers.js:676:5)
+    at processImmediate (timers.js:658:5)
+
