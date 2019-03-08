@@ -26,3 +26,25 @@ CREATE TABLE student(
       REFERENCES student (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION
 );
+
+-- Should ignore select statements
+SELECT * FROM student;
+Create table student_2 as Select * from student where 1=2;
+--should create statement within ignore comment
+/*
+CREATE TABLE cities (
+  name       text,
+  population real,
+  altitude   int
+);
+*/
+
+CREATE TABLE cities (
+  name       text,
+  population real,
+  altitude   int
+);
+
+CREATE TABLE capitals (
+  state      char(2)
+) INHERITS (cities);
