@@ -335,6 +335,7 @@ class TableDialogComponent extends Base {
     const typeTd = document.createElement('td');
     const typeInput = document.createElement('input');
     typeInput.setAttribute('list', 'dataTypes');
+    typeInput.required = true;
 
     if (column) {
       typeInput.value = column.type;
