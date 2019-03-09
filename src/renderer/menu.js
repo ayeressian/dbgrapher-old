@@ -2,7 +2,7 @@ import {
   download
 } from './download.js';
 import {setupOpenSchema, setupDbScehmaFileOpen} from './fileOpenSetup.js';
-import psqlFromViewToDbSchema from './generation/psql/fromViewToDbSchema.js';
+import fromViewToDbSchema from './generation/fromViewToDbSchema.js';
 
 const config = {
   items: [{
@@ -61,13 +61,8 @@ export default function setup(getCurrentSchema, setSchema) {
   setupDbScehmaFileOpen(dbSchemaFileOpenElem, setSchema, chooseDbDialog.getDbType);
 
   const genDbSchemaFromView = () => {
-    let result;
     const schema = getCurrentSchema();
-    switch (schema.dbType) {
-      case 'psql':
-        result = psqlFromViewToDbSchema(schema);
-        break;
-    }
+    const result = fromViewToDbSchema(schema, schema.dbType);
     download(result, 'schema.sql', 'text/plain');
   };
 

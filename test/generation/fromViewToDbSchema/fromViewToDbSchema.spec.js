@@ -1,4 +1,4 @@
-import fromViewToDbSchema from '../../../../src/renderer/generation/psql/fromViewToDbSchema.js';
+import fromViewToDbSchema from '../../../src/renderer/generation/fromViewToDbSchema.js';
 import schema from './schema.json';
 import schemaPsql from './schemaPsql.sql';
 import chai from 'chai';

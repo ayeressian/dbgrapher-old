@@ -1,7 +1,7 @@
 import {
   validateJson
 } from './validate-schema.js';
-import psqlFromDbSchemaToView from './generation/psql/fromDbSchemaToView.js';
+import psqlFromDbSchemaToView from './generation/psqlFromDbSchemaToView.js';
 
 const INVALID_JSON_MSG = 'Selected file doesn\'t contain valid JSON.';
 const INVALID_FILE_FORMAT = 'Selected file doesn\'t have correct Db designer file format';

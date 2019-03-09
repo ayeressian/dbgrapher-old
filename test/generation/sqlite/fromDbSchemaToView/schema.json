@@ -5,12 +5,12 @@
       "columns": [
         {
           "name": "id",
-          "type": "int4",
+          "type": "int",
           "pk": true
         },
         {
           "name": "cpacity",
-          "type": "int4"
+          "type": "int"
         },
         {
           "name": "name",
@@ -27,16 +27,16 @@
       "columns": [
         {
           "name": "id",
-          "type": "int4",
+          "type": "int",
           "pk": true
         },
         {
           "name": "grade",
-          "type": "int4"
+          "type": "int"
         },
         {
           "name": "school_id",
-          "type": "int4",
+          "type": "int",
           "fk": {
             "table": "school",
             "column": "id"
@@ -49,7 +49,7 @@
       "columns": [
         {
           "name": "id",
-          "type": "int4",
+          "type": "int",
           "pk": true
         },
         {
@@ -62,11 +62,11 @@
         },
         {
           "name": "age",
-          "type": "int4"
+          "type": "int"
         },
         {
           "name": "class_id",
-          "type": "int4",
+          "type": "int",
           "fk": {
             "table": "class",
             "column": "id"
@@ -74,7 +74,7 @@
         },
         {
           "name": "friend",
-          "type": "int4",
+          "type": "int",
           "fk": {
             "table": "student",
             "column": "id"
@@ -82,7 +82,7 @@
         },
         {
           "name": "friend1",
-          "type": "int4",
+          "type": "int",
           "fk": {
             "table": "student",
             "column": "id"
@@ -90,7 +90,7 @@
         },
         {
           "name": "friend2",
-          "type": "int4",
+          "type": "int",
           "fk": {
             "table": "student",
             "column": "id"
@@ -98,52 +98,14 @@
         },
         {
           "name": "friend3",
-          "type": "int4",
+          "type": "int",
           "fk": {
             "table": "student",
             "column": "id"
           }
         }
       ]
-    },
-    {
-      "name": "cities",
-      "columns": [
-        {
-          "name": "name",
-          "type": "text"
-        },
-        {
-          "name": "population",
-          "type": "float4"
-        },
-        {
-          "name": "altitude",
-          "type": "int4"
-        }
-      ]
-    },
-    {
-      "name": "capitals",
-      "columns": [
-        {
-          "name": "name",
-          "type": "text"
-        },
-        {
-          "name": "population",
-          "type": "float4"
-        },
-        {
-          "name": "altitude",
-          "type": "int4"
-        },
-        {
-          "name": "state",
-          "type": "bpchar"
-        }
-      ]
     }
   ],
-  "dbType": "psql"
+  "dbType": "sqlite"
 }

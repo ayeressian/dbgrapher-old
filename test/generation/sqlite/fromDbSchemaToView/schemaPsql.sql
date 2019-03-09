@@ -29,14 +29,3 @@ CREATE TABLE student(
 
 -- Should ignore select statements
 SELECT * FROM student;
-Create table student_2 as Select * from student where 1=2;
-
-CREATE TABLE cities (
-  name       text,
-  population real,
-  altitude   int
-);
-
-CREATE TABLE capitals (
-  state      char(2)
-) INHERITS (cities);
