@@ -11,7 +11,7 @@ class CustomDialog extends Base {
 
   open() {
     this._isOpen = true;
-    this._dialog.style.display = 'block';
+    this._dialog.style.display = 'flex';
   }
 
   close() {

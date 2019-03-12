@@ -58,7 +58,7 @@ export default function setup(getCurrentSchema, setSchema) {
   const chooseDbDialog = document.querySelector('choose-db-dialog');
 
   setupOpenSchema(fileOpenElem, setSchema);
-  setupDbScehmaFileOpen(dbSchemaFileOpenElem, setSchema, chooseDbDialog.getDbType);
+  setupDbScehmaFileOpen(dbSchemaFileOpenElem, setSchema, () => chooseDbDialog.getDbType());
 
   const genDbSchemaFromView = () => {
     const schema = getCurrentSchema();
