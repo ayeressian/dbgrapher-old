@@ -6,7 +6,7 @@ class CustomDialog extends Base {
   }
 
   _ready(shadowDom) {
-    this._dialog = shadowDom.querySelector('.dialog');
+    this._dialog = shadowDom.querySelector('.dialog-content');
   }
 
   open() {

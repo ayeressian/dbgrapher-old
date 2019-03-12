@@ -17,7 +17,6 @@
   <input type="file" id="db_schema_file_open" style="display:none" accept="text/plain" />
   <% } %>
   <table-dialog></table-dialog>
-  <welcome-dialog></welcome-dialog>
   <choose-db-dialog></choose-db-dialog>
   <div class="main_container">
     <% if (!IS_ELECTRON) { %>
@@ -26,6 +25,7 @@
     <side-panel></side-panel>
     <db-viewer></db-viewer>
   </div>
+  <welcome-dialog></welcome-dialog>
 </body>
 
 </html>
