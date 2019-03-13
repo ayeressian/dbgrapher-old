@@ -1,3 +1,9 @@
+const supportsAdoptingStyleSheets =
+    ('adoptedStyleSheets' in Document.prototype) &&
+    ('replace' in CSSStyleSheet.prototype);
+
+const styleSheets = new Map();
+
 export default class Base extends HTMLElement {
   constructor(dirPath) {
     super();
@@ -11,16 +17,30 @@ export default class Base extends HTMLElement {
       mode: 'open'
     });
 
+    const styleSheetPath = `../../../${this._dirPath}/style.css`;
     const templatePromise = import(`../../../${this._dirPath}/template.html`);
-    const stylePromise = import(`../../../${this._dirPath}/style.css`);
+    const stylePromise = import(`${styleSheetPath}`);
 
     Promise.all([templatePromise, stylePromise]).then((result) => {
-      this._shadowDom.innerHTML = `
-        <style>
-          ${result[1].default}
-        </style>
-        ${result[0].default}
-      `;
+      if (supportsAdoptingStyleSheets) {
+        this._shadowDom.innerHTML = result[0].default;
+        let styleSheet;
+        if (styleSheets.has(styleSheetPath)) {
+          styleSheet = styleSheets.get(styleSheetPath);
+        } else {
+          const styleSheet = new CSSStyleSheet();
+          styleSheet.replaceSync(result[1].default);
+          styleSheets.set(styleSheetPath, styleSheet);
+        }
+        this._shadowDom.adoptedStyleSheets = [styleSheet];
+      } else {
+        this._shadowDom.innerHTML = `
+          <style>
+            ${result[1].default}
+          </style>
+          ${result[0].default}
+        `;
+      }
       this._ready(this._shadowDom);
     });
   }
