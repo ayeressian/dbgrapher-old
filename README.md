@@ -1,4 +1,4 @@
-# db-designer
+# DB grapher
 
 Designer for relational databases.
 
