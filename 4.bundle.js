@@ -1,0 +1,2 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[4],{233:function(n,t,i){var o=i(239);n.exports="string"==typeof o?o:o.toString()},239:function(n,t,i){(n.exports=i(91)(!1)).push([n.i,"label {\n  display: inline-block;\n  width: 140px;\n  text-align: right;\n}\n\n.block {\n  margin-bottom: 10px;\n}\n\nmenu {\n  margin: auto;\n  padding: 0;\n  width: fit-content;\n  margin-top: 15px;\n}\n",""])}}]);
+//# sourceMappingURL=4.bundle.js.map

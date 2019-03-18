@@ -1,0 +1,2 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[7],{225:function(n,t){n.exports='<custom-dialog>\n  <label>\n    Please choose the database type:\n    <select>\n      <option value="psql">PostgreSQL</option>\n      <option value="sqlite">SQLite</option>\n    </select>\n  </label>\n  <menu>\n    <button id="ok" type="button">Ok</button>\n    <button id="cancel" type="button">Cancel</button>\n  </menu>\n</custom-dialog>\n'}}]);
+//# sourceMappingURL=7.bundle.js.map

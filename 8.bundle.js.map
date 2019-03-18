@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack:///./src/renderer/component/custom-dialog/template.html"],"names":["module","exports"],"mappings":"2EAAAA,EAAAC,QAAA","file":"8.bundle.js","sourcesContent":["module.exports = \"<div class=\\\"dialog\\\">\\n  <div class=\\\"dialog-content\\\">\\n    <slot>\\n    </slot>\\n  </div>\\n</div>\\n\";"],"sourceRoot":""}

@@ -1,0 +1,2 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[10],{228:function(e,l){e.exports='<ul class="left_toolbar">\n  <li class="action create_table" title="Create Table"></li>\n  <li class="action create_relation" title="Create Relation"></li>\n</ul>\n'}}]);
+//# sourceMappingURL=10.bundle.js.map

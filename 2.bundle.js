@@ -1,0 +1,2 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[2],{231:function(n,t,e){var o=e(237);n.exports="string"==typeof o?o:o.toString()},237:function(n,t,e){(n.exports=e(91)(!1)).push([n.i,"menu {\n  display: flex;\n  justify-content: center;\n  padding-left: 0;\n}",""])}}]);
+//# sourceMappingURL=2.bundle.js.map
