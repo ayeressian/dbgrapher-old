@@ -7,7 +7,7 @@
     "start": "webpack-dev-server --config=./webpack.config/webpack.config.js --mode development --open",
     "build-prod": "webpack --config=./webpack.config/webpack.config.js --mode=production",
     "build-dev": "webpack --config=./webpack.config/webpack.config.js --mode=development",
-    "deploy": "rm -rf dist && npm run build-prod && ./deploy.sh",
+    "deploy": "rm -rf dist/* && npm run build-prod && ./deploy.sh",
     "build-electron-main-prod": "webpack --mode=production --config ./webpack.config/main.webpack.config.js ",
     "build-electron-renderer-prod": "webpack --mode=production --config ./webpack.config/renderer.webpack.config.js",
     "build-electron-main-dev": "webpack --watch --mode=development --config ./webpack.config/main.webpack.config.js ",

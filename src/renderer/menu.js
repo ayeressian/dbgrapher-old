@@ -35,6 +35,9 @@ const config = {
       id: 'help',
       title: 'Help',
       items: [{
+        id: 'reportIssue',
+        title: 'Report an issue'
+      }, {
         id: 'about',
         title: 'About'
       }]
@@ -93,10 +96,16 @@ export default function setup(getCurrentSchema, setSchema) {
         break;
       case 'gitHub':
         {
-          const win = window.open('https://github.com/ayeressian/db_designer_pwa', '_blank');
+          const win = window.open('https://github.com/ayeressian/dbgrapher', '_blank');
           win.focus();
-          break;
         }
+        break;
+      case 'reportIssue':
+        {
+          const win = window.open('https://github.com/ayeressian/dbgrapher/issues', '_blank');
+          win.focus();
+        }
+        break;
       case 'downloadApp':
         break;
     }

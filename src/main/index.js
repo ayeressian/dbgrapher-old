@@ -92,18 +92,18 @@ function createMainWindow() {
       }
     ]
   }, {
-    label: 'Operations',
+    label: 'import/export',
     submenu: [{
-        label: 'Generate view from DB schema',
+        label: 'Export SQL',
         click: () => {
-          mainWindow.webContents.send('gen-view-from-db-psql');
+          mainWindow.webContents.send('export-sql');
         }
       },
       {
-        label: 'Generate DB schema from view',
+        label: 'Import SQL',
         click: () => {
           dialog.showSaveDialog(mainWindow, (filePaths) => {
-            mainWindow.webContents.send('gen-db-from-view', filePaths);
+            mainWindow.webContents.send('import-sql', filePaths);
           });
         }
       }
