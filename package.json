@@ -1,5 +1,5 @@
 {
-  "name": "db-grapher",
+  "name": "dbgrapher",
   "version": "1.0.0",
   "description": "",
   "main": "src/electron.js",
