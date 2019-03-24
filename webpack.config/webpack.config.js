@@ -18,7 +18,8 @@ module.exports = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      IS_ELECTRON: false
+      IS_ELECTRON: false,
+      PRODUCTION: false
     }),
     new HtmlWebpackPlugin({
       filename: 'index.html',
