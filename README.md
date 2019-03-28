@@ -1,6 +1,6 @@
 # DB Grapher
 
-WIP. Designer for relational databases. For now it has a support for SQLite and PostgreSQL. 
+Designer for relational databases. The beta version can be viewed [here](https://dbgrapher.com). For now it has a support for SQLite and PostgreSQL. 
 
 It uses [db-viewer-component](https://github.com/ayeressian/db-viewer-component) web component to render designer view.
 It's intended to be used by desktop computer.
