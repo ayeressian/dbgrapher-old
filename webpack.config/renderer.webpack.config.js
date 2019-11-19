@@ -5,7 +5,7 @@ const webpack = require('webpack');
 module.exports = {
   target: 'electron-renderer',
   devtool: 'source-map',
-  entry: './src/renderer/index.js',
+  entry: './src/renderer/index.ts',
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, '../electron-dist/renderer')

@@ -8,10 +8,13 @@ module.exports = {
     contentBase: 'dist',
     port: 9999
   },
-  entry: './src/renderer/index.js',
+  entry: './src/renderer/index.ts',
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, '../dist')
+  },
+  resolve: {
+    extensions: ['.ts', '.js'],
   },
   node: {
     __dirname: true
@@ -63,7 +66,15 @@ module.exports = {
       {
         test: /\.sql$/i,
         use: 'raw-loader',
-      }
+      },
+      {
+        test: /(?<!\.d)\.ts?$/,
+        loader: 'ts-loader',
+      },
+      {
+        test: /\.d\.ts$/,
+        loader: 'ignore-loader'
+      },
     ]
   }
 };
