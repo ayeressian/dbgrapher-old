@@ -1,11 +1,11 @@
-import Base from '../Base.js';
+import Base from '../Base';
 
 class SidePanel extends Base {
   constructor() {
     super(__dirname);
   }
 
-  _ready(shadowDom) {
+  ready(shadowDom) {
     this._dialogTableSameFkOptions = [];
     this._actions = shadowDom.querySelectorAll('.action');
 

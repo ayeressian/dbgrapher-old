@@ -5,7 +5,7 @@ import './component/choose-db-dialog/ChooseDBDialog.js';
 import './component/custom-dialog/CustomDialog.js';
 import './component/side-panel/SidePanel.js';
 import './component/table-dialog-component/TableDialogComponent.js';
-import './component/welcome-dialog/WelcomeDialog.js';
+import './component/welcome-dialog/WelcomeDialog.ts';
 import './globals.d';
 import './style.css';
 

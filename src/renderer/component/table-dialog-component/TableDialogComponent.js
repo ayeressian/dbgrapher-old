@@ -1,4 +1,4 @@
-import Base from '../Base.js';
+import Base from '../Base';
 import dataTypes from '../../dataTypes.js';
 
 class TableDialogComponent extends Base {
@@ -15,7 +15,7 @@ class TableDialogComponent extends Base {
     this._dialogErrorElem.innerHTML = '';
   }
 
-  _ready(shadowdom) {
+  ready(shadowdom) {
     this._dialogColumns = [];
     this._dialogFkColumns = [];
     this._dialogSchemaTable;

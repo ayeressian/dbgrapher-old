@@ -1,12 +1,12 @@
 import {defaults} from 'pg';
-import Base from '../Base.js';
+import Base from '../Base';
 
 class DbConnectionDialog extends Base {
   constructor() {
     super(__dirname);
   }
 
-  _ready(shadowDom) {
+  ready(shadowDom) {
     this._dialog = shadowDom.querySelector('custom-dialog');
     this._cancelBtn = shadowDom.querySelector('#cancel');
     this._connectBtn = shadowDom.querySelector('#connect');

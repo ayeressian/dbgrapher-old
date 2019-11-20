@@ -1,11 +1,11 @@
-import Base from '../Base.js';
+import Base from '../Base';
 
 class CustomDialog extends Base {
   constructor() {
     super(__dirname);
   }
 
-  _ready(shadowDom) {
+  ready(shadowDom) {
     this._dialog = shadowDom.querySelector('.dialog');
   }
 

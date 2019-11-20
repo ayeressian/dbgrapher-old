@@ -1,12 +1,11 @@
-import Base from '../Base.js';
+import Base from '../Base';
 
 class AboutDialog extends Base {
   constructor() {
     super(__dirname);
   }
 
-  _ready(shadowDom) {
-    
+  ready(shadowDom) {  
   }
 }
 

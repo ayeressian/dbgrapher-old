@@ -4,27 +4,36 @@ const supportsAdoptingStyleSheets =
 
 const styleSheets = new Map();
 
-export default class Base extends HTMLElement {
+interface IShadowRootExtra extends ShadowRoot {
+  adoptedStyleSheets: CSSStyleSheet[];
+}
+
+export default abstract class Base extends HTMLElement {
+  private dirPath: string;
+  private shadowDom: IShadowRootExtra;
+
   constructor(dirPath) {
     super();
-    this._dirPath = dirPath;
+    this.dirPath = dirPath;
 
-    this._init();
+    this.init();
   }
 
-  _init() {
-    this._shadowDom = this.attachShadow({
-      mode: 'open'
-    });
+  protected abstract ready(shadowDom: ShadowRoot): void;
 
-    const styleSheetPath = `../../../${this._dirPath}/style.css`;
-    const templatePromise = import(`../../../${this._dirPath}/template.html`);
+  private init() {
+    this.shadowDom = this.attachShadow({
+      mode: 'open',
+    }) as IShadowRootExtra;
+
+    const styleSheetPath = `../../../${this.dirPath}/style.css`;
+    const templatePromise = import(`../../../${this.dirPath}/template.html`);
     // TODO replace string with variable onece webpack bug fixed
-    const stylePromise = import(`../../../${this._dirPath}/style.css`);
+    const stylePromise = import(`../../../${this.dirPath}/style.css`);
 
     Promise.all([templatePromise, stylePromise]).then((result) => {
       if (supportsAdoptingStyleSheets) {
-        this._shadowDom.innerHTML = result[0].default;
+        this.shadowDom.innerHTML = result[0].default;
         let styleSheet;
         if (styleSheets.has(styleSheetPath)) {
           styleSheet = styleSheets.get(styleSheetPath);
@@ -33,16 +42,16 @@ export default class Base extends HTMLElement {
           styleSheet.replaceSync(result[1].default);
           styleSheets.set(styleSheetPath, styleSheet);
         }
-        this._shadowDom.adoptedStyleSheets = [styleSheet];
+        this.shadowDom.adoptedStyleSheets = [styleSheet];
       } else {
-        this._shadowDom.innerHTML = `
+        this.shadowDom.innerHTML = `
           <style>
             ${result[1].default}
           </style>
           ${result[0].default}
         `;
       }
-      this._ready(this._shadowDom);
+      this.ready(this.shadowDom);
     });
   }
 }

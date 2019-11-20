@@ -1,11 +1,11 @@
-import Base from '../Base.js';
+import Base from '../Base';
 
 class ChooseDBDialog extends Base {
   constructor() {
     super(__dirname);
   }
 
-  _ready(shadowDom) {
+  ready(shadowDom) {
     this._dialog = shadowDom.querySelector('custom-dialog');
     this._okBtn = shadowDom.querySelector('#ok');
     this._cancelBtn = shadowDom.querySelector('#cancel');

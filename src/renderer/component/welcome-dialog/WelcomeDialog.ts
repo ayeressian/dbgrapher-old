@@ -1,5 +1,5 @@
 import {loadFromFilePath, setupDbScehmaFileOpen, setupOpenSchema} from '../../fileOpenSetup.js';
-import Base from '../Base.js';
+import Base from '../Base';
 
 class WelcomeDialogComponent extends Base {
   private newFile: any;
@@ -8,6 +8,7 @@ class WelcomeDialogComponent extends Base {
   private dialog: any;
   private chooseDbDialog: any;
   private resultPromise: Promise<unknown>;
+  private resultResolve: (value?: unknown) => void;
 
   constructor() {
     super(__dirname);
@@ -26,7 +27,7 @@ class WelcomeDialogComponent extends Base {
     return this.resultPromise;
   }
 
-  protected _ready(shadowDom) {
+  protected ready(shadowDom) {
     this.newFile = shadowDom.querySelector('#new-file');
     this.openFile = shadowDom.querySelector('#open-file');
     this.importSqlFile = shadowDom.querySelector('#import-sql-file');
@@ -39,15 +40,15 @@ class WelcomeDialogComponent extends Base {
           const dialog = electron.remote.dialog;
           const mainWindow = electron.remote.getCurrentWindow();
           dialog.showOpenDialog(mainWindow, {
-            properties: ['openFile'],
             filters: [{
-              name: 'json',
               extensions: ['json'],
+              name: 'json',
             }],
+            properties: ['openFile'],
           }, (filePaths) => {
             if (filePaths && filePaths.length > 0) {
-              loadFromFilePath(filePaths[0], () => {
-                // this._resultResolve(schema);
+              loadFromFilePath(filePaths[0], (schema) => {
+                this.resultResolve(schema);
                 this.dialog.close();
               });
             }
@@ -57,9 +58,9 @@ class WelcomeDialogComponent extends Base {
     } else {
       const fileOpenELem = shadowDom.getElementById('file_open');
       const dbSchemaFileOpen = shadowDom.getElementById('db_schema_file_open');
-      const setSchema = () => {
+      const setSchema = (schema) => {
         this.dialog.close();
-        // this._resultResolve(schema);
+        this.resultResolve(schema);
       };
       setupOpenSchema(fileOpenELem, setSchema);
       this.openFile.addEventListener('click', () => {
@@ -85,12 +86,9 @@ class WelcomeDialogComponent extends Base {
           this.dialog.open();
           return;
         }
-        // this._resultResolve({tables: [], dbType});
+        this.resultResolve({tables: [], dbType});
       });
     });
-  }
-  private resultResolve() {
-    throw new Error('Method not implemented.');
   }
 }
 
