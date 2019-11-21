@@ -3,7 +3,7 @@ import 'menu-bar-component';
 
 import './component/choose-db-dialog/ChooseDBDialog.js';
 import './component/custom-dialog/CustomDialog.js';
-import './component/side-panel/SidePanel.js';
+import './component/side-panel/SidePanel';
 import './component/table-dialog-component/TableDialogComponent.js';
 import './component/welcome-dialog/WelcomeDialog.ts';
 import './globals.d';
